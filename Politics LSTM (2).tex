@@ -1,0 +1,2964 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Politics LSTM}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{models} \PY{k+kn}{import} \PY{n}{Sequential}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{layers} \PY{k+kn}{import} \PY{n}{LSTM}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{layers} \PY{k+kn}{import} \PY{n}{Dense}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{layers} \PY{k+kn}{import} \PY{n}{Flatten}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{PoliticsData.csv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{data}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+         Date      Type  Pos  Neg  Neu
+0  18-03-2021  Politics  412  152  429
+1  19-03-2021  Politics  654  121  225
+2  20-03-2021  Politics  605  110  285
+3  21-03-2021  Politics  296  505  198
+4  22-03-2021  Politics  265  287  447
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{pos-lstm}{%
+\section{Pos LSTM}\label{pos-lstm}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{prepare\PYZus{}data}\PY{p}{(}\PY{n}{data}\PY{p}{,}\PY{n}{n\PYZus{}step}\PY{p}{)}\PY{p}{:}
+    \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{o}{=}\PY{p}{[}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+        \PY{n}{end\PYZus{}ix} \PY{o}{=} \PY{n}{i} \PY{o}{+} \PY{n}{n\PYZus{}step}
+        \PY{k}{if} \PY{n}{end\PYZus{}ix} \PY{o}{\PYZgt{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+            \PY{k}{break}
+        \PY{n}{seq\PYZus{}x}\PY{p}{,} \PY{n}{seq\PYZus{}y} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{n}{i}\PY{p}{:}\PY{n}{end\PYZus{}ix}\PY{p}{]}\PY{p}{,} \PY{n}{data}\PY{p}{[}\PY{n}{end\PYZus{}ix}\PY{p}{]}
+        \PY{n}{x}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{seq\PYZus{}x}\PY{p}{)}
+        \PY{n}{y}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{seq\PYZus{}y}\PY{p}{)}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Pos\PYZus{}data} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{Pos}
+\PY{n}{n\PYZus{}step} \PY{o}{=} \PY{l+m+mi}{3}
+\PY{n}{x}\PY{p}{,}\PY{n}{y} \PY{o}{=} \PY{n}{prepare\PYZus{}data}\PY{p}{(}\PY{n}{Pos\PYZus{}data}\PY{p}{,} \PY{n}{n\PYZus{}step}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[412 654 605]
+ [654 605 296]
+ [605 296 265]
+ [296 265 294]
+ [265 294 196]
+ [294 196 241]
+ [196 241 216]
+ [241 216 281]
+ [216 281 311]
+ [281 311 261]
+ [311 261 261]
+ [261 261 419]
+ [261 419 419]
+ [419 419 271]
+ [419 271 328]
+ [271 328 181]
+ [328 181 295]
+ [181 295 273]
+ [295 273  74]
+ [273  74 556]
+ [ 74 556 522]
+ [556 522 336]
+ [522 336 246]
+ [336 246 449]
+ [246 449 219]
+ [449 219 318]
+ [219 318 200]
+ [318 200 461]
+ [200 461 381]
+ [461 381 560]
+ [381 560 417]]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[296 265 294 196 241 216 281 311 261 261 419 419 271 328 181 295 273  74
+ 556 522 336 246 449 219 318 200 461 381 560 417 304]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(31, 3)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{41}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{n\PYZus{}features} \PY{o}{=} \PY{l+m+mi}{1}
+\PY{n}{x} \PY{o}{=} \PY{n}{x}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{n\PYZus{}features}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{42}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{42}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(31, 3, 1)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model} \PY{o}{=} \PY{n}{Sequential}\PY{p}{(}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{LSTM}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{return\PYZus{}sequences}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{input\PYZus{}shape}\PY{o}{=}\PY{p}{(}\PY{n}{n\PYZus{}step}\PY{p}{,} \PY{n}{n\PYZus{}features}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{LSTM}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{compile}\PY{p}{(}\PY{n}{optimizer}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{adam}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{loss}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mse}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{epochs}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 1/300
+1/1 [==============================] - 0s 0s/step - loss: 113813.1719
+Epoch 2/300
+1/1 [==============================] - 0s 996us/step - loss: 113594.8125
+Epoch 3/300
+1/1 [==============================] - 0s 999us/step - loss: 113369.4219
+Epoch 4/300
+1/1 [==============================] - 0s 996us/step - loss: 113138.8359
+Epoch 5/300
+1/1 [==============================] - 0s 997us/step - loss: 112905.9062
+Epoch 6/300
+1/1 [==============================] - 0s 1ms/step - loss: 112673.7344
+Epoch 7/300
+1/1 [==============================] - 0s 1ms/step - loss: 112443.7422
+Epoch 8/300
+1/1 [==============================] - 0s 2ms/step - loss: 112221.0156
+Epoch 9/300
+1/1 [==============================] - 0s 1ms/step - loss: 112006.5469
+Epoch 10/300
+1/1 [==============================] - 0s 995us/step - loss: 111794.4219
+Epoch 11/300
+1/1 [==============================] - 0s 997us/step - loss: 111578.9922
+Epoch 12/300
+1/1 [==============================] - 0s 1ms/step - loss: 111353.1797
+Epoch 13/300
+1/1 [==============================] - 0s 2ms/step - loss: 111111.2578
+Epoch 14/300
+1/1 [==============================] - 0s 997us/step - loss: 110849.7031
+Epoch 15/300
+1/1 [==============================] - 0s 1ms/step - loss: 110564.0781
+Epoch 16/300
+1/1 [==============================] - 0s 2ms/step - loss: 110249.8047
+Epoch 17/300
+1/1 [==============================] - 0s 0s/step - loss: 109902.4922
+Epoch 18/300
+1/1 [==============================] - 0s 996us/step - loss: 109517.5234
+Epoch 19/300
+1/1 [==============================] - 0s 0s/step - loss: 109090.2031
+Epoch 20/300
+1/1 [==============================] - 0s 0s/step - loss: 108614.1328
+Epoch 21/300
+1/1 [==============================] - 0s 993us/step - loss: 108083.7266
+Epoch 22/300
+1/1 [==============================] - 0s 997us/step - loss: 107489.1406
+Epoch 23/300
+1/1 [==============================] - 0s 997us/step - loss: 106817.5312
+Epoch 24/300
+1/1 [==============================] - 0s 997us/step - loss: 106053.2031
+Epoch 25/300
+1/1 [==============================] - 0s 2ms/step - loss: 105177.7578
+Epoch 26/300
+1/1 [==============================] - 0s 997us/step - loss: 104172.6562
+Epoch 27/300
+1/1 [==============================] - 0s 997us/step - loss: 103043.6094
+Epoch 28/300
+1/1 [==============================] - 0s 997us/step - loss: 101819.4688
+Epoch 29/300
+1/1 [==============================] - 0s 996us/step - loss: 100511.1562
+Epoch 30/300
+1/1 [==============================] - 0s 998us/step - loss: 99101.7266
+Epoch 31/300
+1/1 [==============================] - 0s 492us/step - loss: 97540.3047
+Epoch 32/300
+1/1 [==============================] - 0s 997us/step - loss: 95794.3203
+Epoch 33/300
+1/1 [==============================] - 0s 2ms/step - loss: 93864.0312
+Epoch 34/300
+1/1 [==============================] - 0s 997us/step - loss: 91723.4062
+Epoch 35/300
+1/1 [==============================] - 0s 2ms/step - loss: 89293.3047
+Epoch 36/300
+1/1 [==============================] - 0s 997us/step - loss: 86416.1875
+Epoch 37/300
+1/1 [==============================] - 0s 2ms/step - loss: 82746.7031
+Epoch 38/300
+1/1 [==============================] - 0s 996us/step - loss: 77594.8594
+Epoch 39/300
+1/1 [==============================] - 0s 998us/step - loss: 70092.6875
+Epoch 40/300
+1/1 [==============================] - 0s 997us/step - loss: 59962.5195
+Epoch 41/300
+1/1 [==============================] - 0s 2ms/step - loss: 51635.2188
+Epoch 42/300
+1/1 [==============================] - 0s 997us/step - loss: 44395.4844
+Epoch 43/300
+1/1 [==============================] - 0s 3ms/step - loss: 37820.2812
+Epoch 44/300
+1/1 [==============================] - 0s 997us/step - loss: 32038.8750
+Epoch 45/300
+1/1 [==============================] - 0s 997us/step - loss: 27575.2441
+Epoch 46/300
+1/1 [==============================] - 0s 998us/step - loss: 25456.1953
+Epoch 47/300
+1/1 [==============================] - 0s 997us/step - loss: 25349.1641
+Epoch 48/300
+1/1 [==============================] - 0s 998us/step - loss: 25960.3535
+Epoch 49/300
+1/1 [==============================] - 0s 997us/step - loss: 27252.8828
+Epoch 50/300
+1/1 [==============================] - 0s 997us/step - loss: 27829.2422
+Epoch 51/300
+1/1 [==============================] - 0s 2ms/step - loss: 26820.4629
+Epoch 52/300
+1/1 [==============================] - 0s 998us/step - loss: 25572.6582
+Epoch 53/300
+1/1 [==============================] - 0s 2ms/step - loss: 24532.1426
+Epoch 54/300
+1/1 [==============================] - 0s 997us/step - loss: 23644.3340
+Epoch 55/300
+1/1 [==============================] - 0s 996us/step - loss: 22841.9785
+Epoch 56/300
+1/1 [==============================] - 0s 3ms/step - loss: 22099.1328
+Epoch 57/300
+1/1 [==============================] - 0s 995us/step - loss: 21395.6719
+Epoch 58/300
+1/1 [==============================] - 0s 998us/step - loss: 20979.7715
+Epoch 59/300
+1/1 [==============================] - 0s 999us/step - loss: 20810.1953
+Epoch 60/300
+1/1 [==============================] - 0s 997us/step - loss: 20706.4922
+Epoch 61/300
+1/1 [==============================] - 0s 997us/step - loss: 20678.7734
+Epoch 62/300
+1/1 [==============================] - 0s 997us/step - loss: 20444.5000
+Epoch 63/300
+1/1 [==============================] - 0s 998us/step - loss: 20179.0586
+Epoch 64/300
+1/1 [==============================] - 0s 2ms/step - loss: 19904.3906
+Epoch 65/300
+1/1 [==============================] - 0s 2ms/step - loss: 19617.3184
+Epoch 66/300
+1/1 [==============================] - 0s 997us/step - loss: 19323.4883
+Epoch 67/300
+1/1 [==============================] - 0s 2ms/step - loss: 18950.2793
+Epoch 68/300
+1/1 [==============================] - 0s 2ms/step - loss: 18457.8477
+Epoch 69/300
+1/1 [==============================] - 0s 998us/step - loss: 18199.0977
+Epoch 70/300
+1/1 [==============================] - 0s 996us/step - loss: 17746.5820
+Epoch 71/300
+1/1 [==============================] - 0s 997us/step - loss: 17208.4355
+Epoch 72/300
+1/1 [==============================] - 0s 2ms/step - loss: 16764.3633
+Epoch 73/300
+1/1 [==============================] - 0s 997us/step - loss: 16391.1973
+Epoch 74/300
+1/1 [==============================] - 0s 995us/step - loss: 16106.3740
+Epoch 75/300
+1/1 [==============================] - 0s 2ms/step - loss: 15790.9365
+Epoch 76/300
+1/1 [==============================] - 0s 997us/step - loss: 15437.7461
+Epoch 77/300
+1/1 [==============================] - 0s 998us/step - loss: 15107.5820
+Epoch 78/300
+1/1 [==============================] - 0s 997us/step - loss: 14910.8145
+Epoch 79/300
+1/1 [==============================] - ETA: 0s - loss: 14663.294 - 0s 996us/step
+- loss: 14663.2949
+Epoch 80/300
+1/1 [==============================] - 0s 995us/step - loss: 14317.4189
+Epoch 81/300
+1/1 [==============================] - 0s 2ms/step - loss: 13922.8809
+Epoch 82/300
+1/1 [==============================] - 0s 998us/step - loss: 13564.7852
+Epoch 83/300
+1/1 [==============================] - 0s 994us/step - loss: 13273.8730
+Epoch 84/300
+1/1 [==============================] - 0s 998us/step - loss: 12959.9766
+Epoch 85/300
+1/1 [==============================] - 0s 3ms/step - loss: 12602.4229
+Epoch 86/300
+1/1 [==============================] - 0s 996us/step - loss: 12267.6064
+Epoch 87/300
+1/1 [==============================] - 0s 997us/step - loss: 11888.5352
+Epoch 88/300
+1/1 [==============================] - 0s 998us/step - loss: 11463.3711
+Epoch 89/300
+1/1 [==============================] - 0s 998us/step - loss: 11114.0293
+Epoch 90/300
+1/1 [==============================] - 0s 997us/step - loss: 10734.5566
+Epoch 91/300
+1/1 [==============================] - 0s 998us/step - loss: 10340.2246
+Epoch 92/300
+1/1 [==============================] - 0s 997us/step - loss: 10004.7158
+Epoch 93/300
+1/1 [==============================] - 0s 2ms/step - loss: 9665.6670
+Epoch 94/300
+1/1 [==============================] - 0s 998us/step - loss: 9344.3008
+Epoch 95/300
+1/1 [==============================] - 0s 2ms/step - loss: 9056.1318
+Epoch 96/300
+1/1 [==============================] - 0s 2ms/step - loss: 8780.4131
+Epoch 97/300
+1/1 [==============================] - 0s 997us/step - loss: 8620.4404
+Epoch 98/300
+1/1 [==============================] - 0s 997us/step - loss: 8688.9951
+Epoch 99/300
+1/1 [==============================] - 0s 998us/step - loss: 8192.2041
+Epoch 100/300
+1/1 [==============================] - 0s 997us/step - loss: 8617.5557
+Epoch 101/300
+1/1 [==============================] - 0s 2ms/step - loss: 8010.1279
+Epoch 102/300
+1/1 [==============================] - 0s 997us/step - loss: 8378.3916
+Epoch 103/300
+1/1 [==============================] - 0s 2ms/step - loss: 7420.0142
+Epoch 104/300
+1/1 [==============================] - 0s 2ms/step - loss: 8538.2793
+Epoch 105/300
+1/1 [==============================] - 0s 997us/step - loss: 7197.1533
+Epoch 106/300
+1/1 [==============================] - 0s 2ms/step - loss: 8160.7197
+Epoch 107/300
+1/1 [==============================] - 0s 2ms/step - loss: 7068.8149
+Epoch 108/300
+1/1 [==============================] - 0s 997us/step - loss: 7362.6479
+Epoch 109/300
+1/1 [==============================] - 0s 997us/step - loss: 6877.8296
+Epoch 110/300
+1/1 [==============================] - 0s 1ms/step - loss: 6805.5283
+Epoch 111/300
+1/1 [==============================] - 0s 997us/step - loss: 6616.5928
+Epoch 112/300
+1/1 [==============================] - 0s 2ms/step - loss: 6766.7700
+Epoch 113/300
+1/1 [==============================] - 0s 998us/step - loss: 6603.1987
+Epoch 114/300
+1/1 [==============================] - 0s 996us/step - loss: 6429.6934
+Epoch 115/300
+1/1 [==============================] - 0s 3ms/step - loss: 6463.5171
+Epoch 116/300
+1/1 [==============================] - 0s 997us/step - loss: 6359.9946
+Epoch 117/300
+1/1 [==============================] - 0s 2ms/step - loss: 6265.6592
+Epoch 118/300
+1/1 [==============================] - 0s 2ms/step - loss: 6199.5430
+Epoch 119/300
+1/1 [==============================] - 0s 2ms/step - loss: 6215.2065
+Epoch 120/300
+1/1 [==============================] - 0s 998us/step - loss: 6167.3062
+Epoch 121/300
+1/1 [==============================] - 0s 998us/step - loss: 6130.4106
+Epoch 122/300
+1/1 [==============================] - 0s 998us/step - loss: 6081.3643
+Epoch 123/300
+1/1 [==============================] - 0s 2ms/step - loss: 6012.5962
+Epoch 124/300
+1/1 [==============================] - 0s 993us/step - loss: 5987.4043
+Epoch 125/300
+1/1 [==============================] - 0s 998us/step - loss: 5942.1899
+Epoch 126/300
+1/1 [==============================] - 0s 2ms/step - loss: 5965.1411
+Epoch 127/300
+1/1 [==============================] - 0s 998us/step - loss: 5885.5605
+Epoch 128/300
+1/1 [==============================] - 0s 0s/step - loss: 5886.5112
+Epoch 129/300
+1/1 [==============================] - 0s 995us/step - loss: 5813.9790
+Epoch 130/300
+1/1 [==============================] - 0s 998us/step - loss: 5812.2358
+Epoch 131/300
+1/1 [==============================] - 0s 998us/step - loss: 5803.2915
+Epoch 132/300
+1/1 [==============================] - 0s 997us/step - loss: 5753.1299
+Epoch 133/300
+1/1 [==============================] - 0s 997us/step - loss: 5733.8164
+Epoch 134/300
+1/1 [==============================] - 0s 2ms/step - loss: 5702.5757
+Epoch 135/300
+1/1 [==============================] - 0s 997us/step - loss: 5705.6660
+Epoch 136/300
+1/1 [==============================] - 0s 996us/step - loss: 5681.6372
+Epoch 137/300
+1/1 [==============================] - 0s 994us/step - loss: 5652.5742
+Epoch 138/300
+1/1 [==============================] - 0s 997us/step - loss: 5651.0938
+Epoch 139/300
+1/1 [==============================] - 0s 995us/step - loss: 5622.7861
+Epoch 140/300
+1/1 [==============================] - 0s 997us/step - loss: 5612.7563
+Epoch 141/300
+1/1 [==============================] - 0s 1ms/step - loss: 5593.3384
+Epoch 142/300
+1/1 [==============================] - 0s 2ms/step - loss: 5572.7236
+Epoch 143/300
+1/1 [==============================] - 0s 997us/step - loss: 5572.1348
+Epoch 144/300
+1/1 [==============================] - 0s 2ms/step - loss: 5547.3706
+Epoch 145/300
+1/1 [==============================] - 0s 2ms/step - loss: 5525.0210
+Epoch 146/300
+1/1 [==============================] - 0s 0s/step - loss: 5517.2256
+Epoch 147/300
+1/1 [==============================] - 0s 999us/step - loss: 5501.4302
+Epoch 148/300
+1/1 [==============================] - 0s 998us/step - loss: 5484.2129
+Epoch 149/300
+1/1 [==============================] - 0s 997us/step - loss: 5471.4878
+Epoch 150/300
+1/1 [==============================] - 0s 2ms/step - loss: 5454.6572
+Epoch 151/300
+1/1 [==============================] - 0s 996us/step - loss: 5437.8555
+Epoch 152/300
+1/1 [==============================] - 0s 997us/step - loss: 5422.6548
+Epoch 153/300
+1/1 [==============================] - 0s 997us/step - loss: 5411.5361
+Epoch 154/300
+1/1 [==============================] - 0s 998us/step - loss: 5399.8677
+Epoch 155/300
+1/1 [==============================] - 0s 997us/step - loss: 5379.4062
+Epoch 156/300
+1/1 [==============================] - 0s 998us/step - loss: 5362.7485
+Epoch 157/300
+1/1 [==============================] - 0s 995us/step - loss: 5348.1553
+Epoch 158/300
+1/1 [==============================] - 0s 2ms/step - loss: 5334.3818
+Epoch 159/300
+1/1 [==============================] - 0s 995us/step - loss: 5320.8970
+Epoch 160/300
+1/1 [==============================] - 0s 998us/step - loss: 5308.6387
+Epoch 161/300
+1/1 [==============================] - 0s 997us/step - loss: 5294.2598
+Epoch 162/300
+1/1 [==============================] - 0s 2ms/step - loss: 5280.2373
+Epoch 163/300
+1/1 [==============================] - 0s 997us/step - loss: 5273.6406
+Epoch 164/300
+1/1 [==============================] - 0s 2ms/step - loss: 5269.3042
+Epoch 165/300
+1/1 [==============================] - 0s 2ms/step - loss: 5294.5396
+Epoch 166/300
+1/1 [==============================] - 0s 998us/step - loss: 5290.7251
+Epoch 167/300
+1/1 [==============================] - 0s 998us/step - loss: 5300.8877
+Epoch 168/300
+1/1 [==============================] - 0s 998us/step - loss: 5226.9058
+Epoch 169/300
+1/1 [==============================] - 0s 2ms/step - loss: 5186.9458
+Epoch 170/300
+1/1 [==============================] - 0s 997us/step - loss: 5143.6211
+Epoch 171/300
+1/1 [==============================] - 0s 996us/step - loss: 5141.8076
+Epoch 172/300
+1/1 [==============================] - 0s 2ms/step - loss: 5168.5728
+Epoch 173/300
+1/1 [==============================] - 0s 998us/step - loss: 5140.5352
+Epoch 174/300
+1/1 [==============================] - 0s 998us/step - loss: 5132.3115
+Epoch 175/300
+1/1 [==============================] - 0s 998us/step - loss: 5076.8535
+Epoch 176/300
+1/1 [==============================] - 0s 997us/step - loss: 5047.6611
+Epoch 177/300
+1/1 [==============================] - 0s 996us/step - loss: 5053.9648
+Epoch 178/300
+1/1 [==============================] - 0s 997us/step - loss: 5126.7520
+Epoch 179/300
+1/1 [==============================] - 0s 997us/step - loss: 5464.8730
+Epoch 180/300
+1/1 [==============================] - 0s 2ms/step - loss: 5330.6533
+Epoch 181/300
+1/1 [==============================] - 0s 998us/step - loss: 5194.6611
+Epoch 182/300
+1/1 [==============================] - 0s 997us/step - loss: 5127.5806
+Epoch 183/300
+1/1 [==============================] - 0s 998us/step - loss: 5155.4146
+Epoch 184/300
+1/1 [==============================] - 0s 996us/step - loss: 4994.6714
+Epoch 185/300
+1/1 [==============================] - 0s 2ms/step - loss: 4940.0024
+Epoch 186/300
+1/1 [==============================] - 0s 998us/step - loss: 5091.1035
+Epoch 187/300
+1/1 [==============================] - 0s 997us/step - loss: 5122.4775
+Epoch 188/300
+1/1 [==============================] - 0s 998us/step - loss: 4808.6855
+Epoch 189/300
+1/1 [==============================] - 0s 997us/step - loss: 5222.7798
+Epoch 190/300
+1/1 [==============================] - 0s 997us/step - loss: 6377.9829
+Epoch 191/300
+1/1 [==============================] - 0s 999us/step - loss: 5621.4434
+Epoch 192/300
+1/1 [==============================] - 0s 996us/step - loss: 5967.9023
+Epoch 193/300
+1/1 [==============================] - 0s 2ms/step - loss: 5595.2437
+Epoch 194/300
+1/1 [==============================] - 0s 996us/step - loss: 6201.8335
+Epoch 195/300
+1/1 [==============================] - 0s 997us/step - loss: 4779.3369
+Epoch 196/300
+1/1 [==============================] - 0s 997us/step - loss: 6823.2354
+Epoch 197/300
+1/1 [==============================] - 0s 996us/step - loss: 5510.9980
+Epoch 198/300
+1/1 [==============================] - 0s 2ms/step - loss: 7111.6221
+Epoch 199/300
+1/1 [==============================] - 0s 997us/step - loss: 6472.4595
+Epoch 200/300
+1/1 [==============================] - 0s 998us/step - loss: 5459.2334
+Epoch 201/300
+1/1 [==============================] - 0s 2ms/step - loss: 6643.4097
+Epoch 202/300
+1/1 [==============================] - 0s 2ms/step - loss: 5365.5562
+Epoch 203/300
+1/1 [==============================] - 0s 997us/step - loss: 5342.4482
+Epoch 204/300
+1/1 [==============================] - 0s 2ms/step - loss: 5703.4546
+Epoch 205/300
+1/1 [==============================] - 0s 996us/step - loss: 5397.8428
+Epoch 206/300
+1/1 [==============================] - 0s 998us/step - loss: 5232.8237
+Epoch 207/300
+1/1 [==============================] - 0s 997us/step - loss: 5278.4824
+Epoch 208/300
+1/1 [==============================] - 0s 0s/step - loss: 5073.7461
+Epoch 209/300
+1/1 [==============================] - 0s 997us/step - loss: 4972.4136
+Epoch 210/300
+1/1 [==============================] - 0s 998us/step - loss: 5184.0649
+Epoch 211/300
+1/1 [==============================] - 0s 997us/step - loss: 5278.9209
+Epoch 212/300
+1/1 [==============================] - 0s 996us/step - loss: 5135.5503
+Epoch 213/300
+1/1 [==============================] - 0s 998us/step - loss: 5001.6514
+Epoch 214/300
+1/1 [==============================] - 0s 997us/step - loss: 5044.7617
+Epoch 215/300
+1/1 [==============================] - 0s 2ms/step - loss: 4856.1895
+Epoch 216/300
+1/1 [==============================] - 0s 2ms/step - loss: 4682.7637
+Epoch 217/300
+1/1 [==============================] - 0s 997us/step - loss: 4677.4243
+Epoch 218/300
+1/1 [==============================] - 0s 998us/step - loss: 4727.2925
+Epoch 219/300
+1/1 [==============================] - 0s 996us/step - loss: 4596.2188
+Epoch 220/300
+1/1 [==============================] - 0s 998us/step - loss: 4399.2075
+Epoch 221/300
+1/1 [==============================] - 0s 2ms/step - loss: 4420.8345
+Epoch 222/300
+1/1 [==============================] - 0s 997us/step - loss: 4503.2549
+Epoch 223/300
+1/1 [==============================] - 0s 3ms/step - loss: 4453.2476
+Epoch 224/300
+1/1 [==============================] - 0s 998us/step - loss: 4297.8086
+Epoch 225/300
+1/1 [==============================] - 0s 997us/step - loss: 4213.7046
+Epoch 226/300
+1/1 [==============================] - 0s 998us/step - loss: 4277.0840
+Epoch 227/300
+1/1 [==============================] - 0s 995us/step - loss: 4268.9194
+Epoch 228/300
+1/1 [==============================] - 0s 998us/step - loss: 4159.5874
+Epoch 229/300
+1/1 [==============================] - 0s 996us/step - loss: 4114.1660
+Epoch 230/300
+1/1 [==============================] - 0s 2ms/step - loss: 4137.3213
+Epoch 231/300
+1/1 [==============================] - 0s 997us/step - loss: 4121.3887
+Epoch 232/300
+1/1 [==============================] - 0s 997us/step - loss: 4029.4905
+Epoch 233/300
+1/1 [==============================] - 0s 997us/step - loss: 4001.9155
+Epoch 234/300
+1/1 [==============================] - 0s 997us/step - loss: 4011.2651
+Epoch 235/300
+1/1 [==============================] - 0s 2ms/step - loss: 3992.8181
+Epoch 236/300
+1/1 [==============================] - 0s 998us/step - loss: 3932.1692
+Epoch 237/300
+1/1 [==============================] - 0s 999us/step - loss: 3887.5337
+Epoch 238/300
+1/1 [==============================] - 0s 998us/step - loss: 3870.1038
+Epoch 239/300
+1/1 [==============================] - 0s 2ms/step - loss: 3853.4551
+Epoch 240/300
+1/1 [==============================] - 0s 999us/step - loss: 3803.2219
+Epoch 241/300
+1/1 [==============================] - 0s 2ms/step - loss: 3754.6492
+Epoch 242/300
+1/1 [==============================] - 0s 998us/step - loss: 3737.2041
+Epoch 243/300
+1/1 [==============================] - 0s 997us/step - loss: 3719.3376
+Epoch 244/300
+1/1 [==============================] - ETA: 0s - loss: 3678.81 - 0s 998us/step -
+loss: 3678.8142
+Epoch 245/300
+1/1 [==============================] - 0s 2ms/step - loss: 3639.6797
+Epoch 246/300
+1/1 [==============================] - 0s 2ms/step - loss: 3614.0322
+Epoch 247/300
+1/1 [==============================] - 0s 2ms/step - loss: 3583.4697
+Epoch 248/300
+1/1 [==============================] - 0s 996us/step - loss: 3547.8210
+Epoch 249/300
+1/1 [==============================] - 0s 2ms/step - loss: 3514.7820
+Epoch 250/300
+1/1 [==============================] - 0s 997us/step - loss: 3478.5071
+Epoch 251/300
+1/1 [==============================] - 0s 1ms/step - loss: 3443.0059
+Epoch 252/300
+1/1 [==============================] - 0s 998us/step - loss: 3410.8489
+Epoch 253/300
+1/1 [==============================] - 0s 998us/step - loss: 3380.0869
+Epoch 254/300
+1/1 [==============================] - 0s 997us/step - loss: 3347.4956
+Epoch 255/300
+1/1 [==============================] - 0s 996us/step - loss: 3314.0178
+Epoch 256/300
+1/1 [==============================] - 0s 997us/step - loss: 3280.6021
+Epoch 257/300
+1/1 [==============================] - 0s 998us/step - loss: 3250.9478
+Epoch 258/300
+1/1 [==============================] - 0s 2ms/step - loss: 3218.2312
+Epoch 259/300
+1/1 [==============================] - 0s 1ms/step - loss: 3182.2524
+Epoch 260/300
+1/1 [==============================] - 0s 2ms/step - loss: 3151.6208
+Epoch 261/300
+1/1 [==============================] - 0s 997us/step - loss: 3120.2188
+Epoch 262/300
+1/1 [==============================] - ETA: 0s - loss: 3084.54 - 0s 998us/step -
+loss: 3084.5417
+Epoch 263/300
+1/1 [==============================] - 0s 997us/step - loss: 3049.8589
+Epoch 264/300
+1/1 [==============================] - 0s 997us/step - loss: 3014.0190
+Epoch 265/300
+1/1 [==============================] - 0s 2ms/step - loss: 2982.9607
+Epoch 266/300
+1/1 [==============================] - 0s 2ms/step - loss: 2951.8674
+Epoch 267/300
+1/1 [==============================] - 0s 996us/step - loss: 2918.5022
+Epoch 268/300
+1/1 [==============================] - 0s 998us/step - loss: 2887.4089
+Epoch 269/300
+1/1 [==============================] - 0s 997us/step - loss: 2851.0107
+Epoch 270/300
+1/1 [==============================] - 0s 998us/step - loss: 2818.9937
+Epoch 271/300
+1/1 [==============================] - 0s 993us/step - loss: 2786.3528
+Epoch 272/300
+1/1 [==============================] - 0s 997us/step - loss: 2752.6270
+Epoch 273/300
+1/1 [==============================] - 0s 998us/step - loss: 2718.4514
+Epoch 274/300
+1/1 [==============================] - 0s 997us/step - loss: 2685.2737
+Epoch 275/300
+1/1 [==============================] - 0s 3ms/step - loss: 2653.3655
+Epoch 276/300
+1/1 [==============================] - 0s 2ms/step - loss: 2622.0813
+Epoch 277/300
+1/1 [==============================] - 0s 2ms/step - loss: 2589.1855
+Epoch 278/300
+1/1 [==============================] - 0s 995us/step - loss: 2557.8428
+Epoch 279/300
+1/1 [==============================] - 0s 997us/step - loss: 2528.0923
+Epoch 280/300
+1/1 [==============================] - 0s 998us/step - loss: 2522.1970
+Epoch 281/300
+1/1 [==============================] - 0s 2ms/step - loss: 2643.2524
+Epoch 282/300
+1/1 [==============================] - 0s 1ms/step - loss: 2666.4285
+Epoch 283/300
+1/1 [==============================] - 0s 3ms/step - loss: 2620.7874
+Epoch 284/300
+1/1 [==============================] - 0s 998us/step - loss: 2456.0645
+Epoch 285/300
+1/1 [==============================] - 0s 998us/step - loss: 2504.2239
+Epoch 286/300
+1/1 [==============================] - 0s 997us/step - loss: 2506.7561
+Epoch 287/300
+1/1 [==============================] - 0s 2ms/step - loss: 2361.8145
+Epoch 288/300
+1/1 [==============================] - 0s 1ms/step - loss: 2414.7778
+Epoch 289/300
+1/1 [==============================] - 0s 997us/step - loss: 2429.4814
+Epoch 290/300
+1/1 [==============================] - 0s 999us/step - loss: 2257.9631
+Epoch 291/300
+1/1 [==============================] - 0s 2ms/step - loss: 2361.7285
+Epoch 292/300
+1/1 [==============================] - 0s 997us/step - loss: 2374.0479
+Epoch 293/300
+1/1 [==============================] - 0s 997us/step - loss: 2171.5061
+Epoch 294/300
+1/1 [==============================] - 0s 3ms/step - loss: 2296.0813
+Epoch 295/300
+1/1 [==============================] - 0s 2ms/step - loss: 2216.1011
+Epoch 296/300
+1/1 [==============================] - 0s 2ms/step - loss: 2147.2869
+Epoch 297/300
+1/1 [==============================] - 0s 997us/step - loss: 2161.4543
+Epoch 298/300
+1/1 [==============================] - 0s 2ms/step - loss: 2087.8335
+Epoch 299/300
+1/1 [==============================] - 0s 998us/step - loss: 2064.4624
+Epoch 300/300
+1/1 [==============================] - 0s 998us/step - loss: 2057.2776
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<tensorflow.python.keras.callbacks.History at 0x224e9ec4700>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{53}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x\PYZus{}input} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{560}\PY{p}{,} \PY{l+m+mi}{417}\PY{p}{,} \PY{l+m+mi}{304}\PY{p}{]}\PY{p}{)}
+\PY{n}{temp\PYZus{}input} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{x\PYZus{}input}\PY{p}{)}
+\PY{n}{lst\PYZus{}output} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{i}\PY{o}{=}\PY{l+m+mi}{0}
+\PY{k}{while}\PY{p}{(}\PY{n}{i}\PY{o}{\PYZlt{}}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{temp\PYZus{}input}\PY{p}{)}\PY{o}{\PYZgt{}}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{:}
+        \PY{n}{x\PYZus{}input} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{temp\PYZus{}input}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ day input }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{,}\PY{n}{x\PYZus{}input}\PY{p}{)}\PY{p}{)}
+        \PY{n}{x\PYZus{}input} \PY{o}{=} \PY{n}{x\PYZus{}input}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{n\PYZus{}step}\PY{p}{,} \PY{n}{n\PYZus{}features}\PY{p}{)}\PY{p}{)}
+        \PY{n}{yhat} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{x\PYZus{}input}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ day output }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{,}\PY{n}{yhat}\PY{p}{)}\PY{p}{)}
+        \PY{n}{temp\PYZus{}input}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{yhat}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{temp\PYZus{}input} \PY{o}{=} \PY{n}{temp\PYZus{}input}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}
+        \PY{n}{lst\PYZus{}output}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{yhat}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{i}\PY{o}{=}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n}{x\PYZus{}input} \PY{o}{=} \PY{n}{x\PYZus{}input}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{n\PYZus{}step}\PY{p}{,} \PY{n}{n\PYZus{}features}\PY{p}{)}\PY{p}{)}
+        \PY{n}{yhat} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{x\PYZus{}input}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{yhat}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{temp\PYZus{}input}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{yhat}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{lst\PYZus{}output}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{yhat}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{i}\PY{o}{=}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}
+        
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{lst\PYZus{}output}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[484.60498]
+1 day input [417.         304.         484.60498047]
+1 day output [[182.24074]]
+2 day input [304.         484.60498047 182.24073792]
+2 day output [[382.09604]]
+3 day input [484.60498 182.24074 382.09604]
+3 day output [[594.0912]]
+4 day input [182.24074 382.09604 594.0912 ]
+4 day output [[422.24057]]
+5 day input [382.09604 594.0912  422.24057]
+5 day output [[315.95203]]
+6 day input [594.0912  422.24057 315.95203]
+6 day output [[437.1729]]
+7 day input [422.24057 315.95203 437.1729 ]
+7 day output [[174.73291]]
+8 day input [315.95203 437.1729  174.73291]
+8 day output [[358.75113]]
+9 day input [437.1729  174.73291 358.75113]
+9 day output [[728.9151]]
+[484.60498, 182.24074, 382.09604, 594.0912, 422.24057, 315.95203, 437.1729,
+174.73291, 358.75113, 728.9151]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{56}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Pos\PYZus{}pred} \PY{o}{=} \PY{n}{lst\PYZus{}output}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{58}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Pos\PYZus{}pred}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{58}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[484.60498,
+ 182.24074,
+ 382.09604,
+ 594.0912,
+ 422.24057,
+ 315.95203,
+ 437.1729,
+ 174.73291,
+ 358.75113,
+ 728.9151]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{neg-lstm}{%
+\section{Neg LSTM}\label{neg-lstm}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{59}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{prepare\PYZus{}data}\PY{p}{(}\PY{n}{data}\PY{p}{,}\PY{n}{n\PYZus{}step}\PY{p}{)}\PY{p}{:}
+    \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{o}{=}\PY{p}{[}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+        \PY{n}{end\PYZus{}ix} \PY{o}{=} \PY{n}{i} \PY{o}{+} \PY{n}{n\PYZus{}step}
+        \PY{k}{if} \PY{n}{end\PYZus{}ix} \PY{o}{\PYZgt{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+            \PY{k}{break}
+        \PY{n}{seq\PYZus{}x}\PY{p}{,} \PY{n}{seq\PYZus{}y} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{n}{i}\PY{p}{:}\PY{n}{end\PYZus{}ix}\PY{p}{]}\PY{p}{,} \PY{n}{data}\PY{p}{[}\PY{n}{end\PYZus{}ix}\PY{p}{]}
+        \PY{n}{x}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{seq\PYZus{}x}\PY{p}{)}
+        \PY{n}{y}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{seq\PYZus{}y}\PY{p}{)}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{60}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Neg\PYZus{}data} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{Neg}
+\PY{n}{n\PYZus{}step} \PY{o}{=} \PY{l+m+mi}{3}
+\PY{n}{x}\PY{p}{,}\PY{n}{y} \PY{o}{=} \PY{n}{prepare\PYZus{}data}\PY{p}{(}\PY{n}{Neg\PYZus{}data}\PY{p}{,} \PY{n}{n\PYZus{}step}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{61}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[152 121 110]
+ [121 110 505]
+ [110 505 287]
+ [505 287 149]
+ [287 149  67]
+ [149  67 358]
+ [ 67 358 298]
+ [358 298 286]
+ [298 286 213]
+ [286 213 252]
+ [213 252 252]
+ [252 252 222]
+ [252 222 222]
+ [222 222 346]
+ [222 346 162]
+ [346 162 540]
+ [162 540 359]
+ [540 359 287]
+ [359 287 340]
+ [287 340 121]
+ [340 121 288]
+ [121 288 326]
+ [288 326 210]
+ [326 210 189]
+ [210 189 119]
+ [189 119 327]
+ [119 327 245]
+ [327 245 209]
+ [245 209 532]
+ [209 532 304]
+ [532 304 373]]
+[505 287 149  67 358 298 286 213 252 252 222 222 346 162 540 359 287 340
+ 121 288 326 210 189 119 327 245 209 532 304 373 439]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{62}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{62}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(31, 3)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{63}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{n\PYZus{}features} \PY{o}{=} \PY{l+m+mi}{1}
+\PY{n}{x} \PY{o}{=} \PY{n}{x}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{n\PYZus{}features}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{64}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{64}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(31, 3, 1)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{65}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model} \PY{o}{=} \PY{n}{Sequential}\PY{p}{(}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{LSTM}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{return\PYZus{}sequences}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{input\PYZus{}shape}\PY{o}{=}\PY{p}{(}\PY{n}{n\PYZus{}step}\PY{p}{,} \PY{n}{n\PYZus{}features}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{LSTM}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{compile}\PY{p}{(}\PY{n}{optimizer}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{adam}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{loss}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mse}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{epochs}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 1/300
+1/1 [==============================] - 0s 16ms/step - loss: 93688.0078
+Epoch 2/300
+1/1 [==============================] - 0s 2ms/step - loss: 91888.6719
+Epoch 3/300
+1/1 [==============================] - 0s 998us/step - loss: 90059.7891
+Epoch 4/300
+1/1 [==============================] - 0s 2ms/step - loss: 88394.3125
+Epoch 5/300
+1/1 [==============================] - 0s 1ms/step - loss: 86755.7109
+Epoch 6/300
+1/1 [==============================] - 0s 998us/step - loss: 85081.8516
+Epoch 7/300
+1/1 [==============================] - 0s 997us/step - loss: 83637.5156
+Epoch 8/300
+1/1 [==============================] - 0s 998us/step - loss: 82333.7422
+Epoch 9/300
+1/1 [==============================] - 0s 0s/step - loss: 81011.9141
+Epoch 10/300
+1/1 [==============================] - 0s 2ms/step - loss: 79704.7031
+Epoch 11/300
+1/1 [==============================] - 0s 997us/step - loss: 78410.5703
+Epoch 12/300
+1/1 [==============================] - 0s 999us/step - loss: 77058.6797
+Epoch 13/300
+1/1 [==============================] - 0s 998us/step - loss: 75551.1094
+Epoch 14/300
+1/1 [==============================] - 0s 1ms/step - loss: 74004.2891
+Epoch 15/300
+1/1 [==============================] - 0s 993us/step - loss: 72617.5312
+Epoch 16/300
+1/1 [==============================] - 0s 1ms/step - loss: 71238.1641
+Epoch 17/300
+1/1 [==============================] - 0s 996us/step - loss: 69944.7109
+Epoch 18/300
+1/1 [==============================] - 0s 2ms/step - loss: 68707.7578
+Epoch 19/300
+1/1 [==============================] - 0s 997us/step - loss: 67449.1094
+Epoch 20/300
+1/1 [==============================] - 0s 998us/step - loss: 66136.0938
+Epoch 21/300
+1/1 [==============================] - 0s 997us/step - loss: 64770.0430
+Epoch 22/300
+1/1 [==============================] - 0s 996us/step - loss: 63403.6953
+Epoch 23/300
+1/1 [==============================] - 0s 996us/step - loss: 62008.1094
+Epoch 24/300
+1/1 [==============================] - 0s 997us/step - loss: 60543.6172
+Epoch 25/300
+1/1 [==============================] - 0s 2ms/step - loss: 58937.8555
+Epoch 26/300
+1/1 [==============================] - 0s 998us/step - loss: 57087.5664
+Epoch 27/300
+1/1 [==============================] - 0s 998us/step - loss: 55025.4453
+Epoch 28/300
+1/1 [==============================] - 0s 997us/step - loss: 52632.3789
+Epoch 29/300
+1/1 [==============================] - 0s 998us/step - loss: 50255.9414
+Epoch 30/300
+1/1 [==============================] - 0s 997us/step - loss: 46954.7852
+Epoch 31/300
+1/1 [==============================] - 0s 998us/step - loss: 43106.0586
+Epoch 32/300
+1/1 [==============================] - 0s 998us/step - loss: 39135.0977
+Epoch 33/300
+1/1 [==============================] - 0s 2ms/step - loss: 35401.2031
+Epoch 34/300
+1/1 [==============================] - 0s 2ms/step - loss: 30751.7871
+Epoch 35/300
+1/1 [==============================] - 0s 3ms/step - loss: 26081.9922
+Epoch 36/300
+1/1 [==============================] - 0s 2ms/step - loss: 22946.2578
+Epoch 37/300
+1/1 [==============================] - 0s 997us/step - loss: 21759.1328
+Epoch 38/300
+1/1 [==============================] - 0s 2ms/step - loss: 22279.4727
+Epoch 39/300
+1/1 [==============================] - 0s 996us/step - loss: 22344.9551
+Epoch 40/300
+1/1 [==============================] - 0s 997us/step - loss: 22104.0469
+Epoch 41/300
+1/1 [==============================] - 0s 997us/step - loss: 21609.0195
+Epoch 42/300
+1/1 [==============================] - 0s 2ms/step - loss: 21502.8359
+Epoch 43/300
+1/1 [==============================] - 0s 998us/step - loss: 21301.7422
+Epoch 44/300
+1/1 [==============================] - 0s 997us/step - loss: 20708.7930
+Epoch 45/300
+1/1 [==============================] - 0s 2ms/step - loss: 20139.3613
+Epoch 46/300
+1/1 [==============================] - 0s 997us/step - loss: 19947.3945
+Epoch 47/300
+1/1 [==============================] - 0s 997us/step - loss: 19681.6152
+Epoch 48/300
+1/1 [==============================] - 0s 2ms/step - loss: 19379.1055
+Epoch 49/300
+1/1 [==============================] - 0s 2ms/step - loss: 19138.0801
+Epoch 50/300
+1/1 [==============================] - 0s 998us/step - loss: 18908.6113
+Epoch 51/300
+1/1 [==============================] - 0s 2ms/step - loss: 18676.5234
+Epoch 52/300
+1/1 [==============================] - 0s 997us/step - loss: 18492.4551
+Epoch 53/300
+1/1 [==============================] - 0s 2ms/step - loss: 18332.9141
+Epoch 54/300
+1/1 [==============================] - 0s 999us/step - loss: 18179.0684
+Epoch 55/300
+1/1 [==============================] - 0s 997us/step - loss: 18018.9961
+Epoch 56/300
+1/1 [==============================] - 0s 998us/step - loss: 17810.1660
+Epoch 57/300
+1/1 [==============================] - 0s 2ms/step - loss: 17580.3262
+Epoch 58/300
+1/1 [==============================] - 0s 2ms/step - loss: 17342.1875
+Epoch 59/300
+1/1 [==============================] - 0s 2ms/step - loss: 17054.9668
+Epoch 60/300
+1/1 [==============================] - 0s 2ms/step - loss: 16498.8984
+Epoch 61/300
+1/1 [==============================] - 0s 2ms/step - loss: 16176.1455
+Epoch 62/300
+1/1 [==============================] - 0s 998us/step - loss: 15754.1074
+Epoch 63/300
+1/1 [==============================] - 0s 2ms/step - loss: 15267.9482
+Epoch 64/300
+1/1 [==============================] - 0s 997us/step - loss: 14932.7451
+Epoch 65/300
+1/1 [==============================] - 0s 997us/step - loss: 14698.6572
+Epoch 66/300
+1/1 [==============================] - 0s 996us/step - loss: 14384.5625
+Epoch 67/300
+1/1 [==============================] - 0s 998us/step - loss: 14143.1279
+Epoch 68/300
+1/1 [==============================] - 0s 2ms/step - loss: 13843.1133
+Epoch 69/300
+1/1 [==============================] - 0s 998us/step - loss: 13480.9023
+Epoch 70/300
+1/1 [==============================] - 0s 2ms/step - loss: 13171.4863
+Epoch 71/300
+1/1 [==============================] - 0s 2ms/step - loss: 12683.9150
+Epoch 72/300
+1/1 [==============================] - 0s 997us/step - loss: 12427.4268
+Epoch 73/300
+1/1 [==============================] - 0s 2ms/step - loss: 12258.8984
+Epoch 74/300
+1/1 [==============================] - 0s 998us/step - loss: 11762.2881
+Epoch 75/300
+1/1 [==============================] - 0s 998us/step - loss: 11834.9863
+Epoch 76/300
+1/1 [==============================] - 0s 997us/step - loss: 11313.5186
+Epoch 77/300
+1/1 [==============================] - 0s 998us/step - loss: 11039.0195
+Epoch 78/300
+1/1 [==============================] - 0s 997us/step - loss: 10609.5537
+Epoch 79/300
+1/1 [==============================] - 0s 997us/step - loss: 10522.1504
+Epoch 80/300
+1/1 [==============================] - 0s 997us/step - loss: 10035.9072
+Epoch 81/300
+1/1 [==============================] - 0s 2ms/step - loss: 10005.9756
+Epoch 82/300
+1/1 [==============================] - 0s 2ms/step - loss: 8965.5391
+Epoch 83/300
+1/1 [==============================] - 0s 997us/step - loss: 9843.3877
+Epoch 84/300
+1/1 [==============================] - 0s 2ms/step - loss: 8304.7861
+Epoch 85/300
+1/1 [==============================] - 0s 998us/step - loss: 8714.4697
+Epoch 86/300
+1/1 [==============================] - 0s 996us/step - loss: 8115.1426
+Epoch 87/300
+1/1 [==============================] - 0s 2ms/step - loss: 7555.3486
+Epoch 88/300
+1/1 [==============================] - 0s 998us/step - loss: 7698.8076
+Epoch 89/300
+1/1 [==============================] - 0s 998us/step - loss: 6943.2051
+Epoch 90/300
+1/1 [==============================] - 0s 997us/step - loss: 6911.3408
+Epoch 91/300
+1/1 [==============================] - 0s 998us/step - loss: 6466.9014
+Epoch 92/300
+1/1 [==============================] - 0s 2ms/step - loss: 6322.3521
+Epoch 93/300
+1/1 [==============================] - 0s 2ms/step - loss: 6182.0151
+Epoch 94/300
+1/1 [==============================] - 0s 997us/step - loss: 5864.7983
+Epoch 95/300
+1/1 [==============================] - 0s 2ms/step - loss: 5757.9404
+Epoch 96/300
+1/1 [==============================] - 0s 2ms/step - loss: 5480.5098
+Epoch 97/300
+1/1 [==============================] - 0s 2ms/step - loss: 5385.0659
+Epoch 98/300
+1/1 [==============================] - 0s 997us/step - loss: 5222.6323
+Epoch 99/300
+1/1 [==============================] - 0s 2ms/step - loss: 4994.6167
+Epoch 100/300
+1/1 [==============================] - 0s 998us/step - loss: 4762.2974
+Epoch 101/300
+1/1 [==============================] - 0s 998us/step - loss: 4631.7603
+Epoch 102/300
+1/1 [==============================] - 0s 997us/step - loss: 4547.0981
+Epoch 103/300
+1/1 [==============================] - 0s 2ms/step - loss: 4418.8340
+Epoch 104/300
+1/1 [==============================] - 0s 2ms/step - loss: 4262.5762
+Epoch 105/300
+1/1 [==============================] - 0s 997us/step - loss: 4114.7432
+Epoch 106/300
+1/1 [==============================] - 0s 2ms/step - loss: 3923.4912
+Epoch 107/300
+1/1 [==============================] - 0s 2ms/step - loss: 3811.4663
+Epoch 108/300
+1/1 [==============================] - 0s 998us/step - loss: 3768.5051
+Epoch 109/300
+1/1 [==============================] - 0s 1ms/step - loss: 3676.1274
+Epoch 110/300
+1/1 [==============================] - 0s 2ms/step - loss: 4797.2642
+Epoch 111/300
+1/1 [==============================] - 0s 996us/step - loss: 5012.5986
+Epoch 112/300
+1/1 [==============================] - 0s 2ms/step - loss: 3290.0095
+Epoch 113/300
+1/1 [==============================] - 0s 997us/step - loss: 3955.8159
+Epoch 114/300
+1/1 [==============================] - 0s 3ms/step - loss: 3840.2725
+Epoch 115/300
+1/1 [==============================] - 0s 998us/step - loss: 3347.2344
+Epoch 116/300
+1/1 [==============================] - 0s 998us/step - loss: 3763.8547
+Epoch 117/300
+1/1 [==============================] - 0s 998us/step - loss: 3107.8618
+Epoch 118/300
+1/1 [==============================] - 0s 995us/step - loss: 3295.3813
+Epoch 119/300
+1/1 [==============================] - 0s 997us/step - loss: 3500.5796
+Epoch 120/300
+1/1 [==============================] - 0s 996us/step - loss: 3309.3025
+Epoch 121/300
+1/1 [==============================] - 0s 997us/step - loss: 3160.2117
+Epoch 122/300
+1/1 [==============================] - 0s 995us/step - loss: 2931.7007
+Epoch 123/300
+1/1 [==============================] - 0s 998us/step - loss: 2838.9236
+Epoch 124/300
+1/1 [==============================] - 0s 998us/step - loss: 2676.8293
+Epoch 125/300
+1/1 [==============================] - 0s 995us/step - loss: 2684.3767
+Epoch 126/300
+1/1 [==============================] - 0s 2ms/step - loss: 2623.1567
+Epoch 127/300
+1/1 [==============================] - 0s 997us/step - loss: 2477.9333
+Epoch 128/300
+1/1 [==============================] - 0s 995us/step - loss: 2512.7410
+Epoch 129/300
+1/1 [==============================] - 0s 998us/step - loss: 2530.2175
+Epoch 130/300
+1/1 [==============================] - 0s 997us/step - loss: 2520.3518
+Epoch 131/300
+1/1 [==============================] - 0s 2ms/step - loss: 2358.8760
+Epoch 132/300
+1/1 [==============================] - 0s 997us/step - loss: 2726.4880
+Epoch 133/300
+1/1 [==============================] - 0s 2ms/step - loss: 2746.5310
+Epoch 134/300
+1/1 [==============================] - 0s 2ms/step - loss: 3736.9907
+Epoch 135/300
+1/1 [==============================] - 0s 997us/step - loss: 2390.1365
+Epoch 136/300
+1/1 [==============================] - 0s 2ms/step - loss: 9857.5352
+Epoch 137/300
+1/1 [==============================] - 0s 997us/step - loss: 2655.0759
+Epoch 138/300
+1/1 [==============================] - 0s 997us/step - loss: 6632.9136
+Epoch 139/300
+1/1 [==============================] - 0s 997us/step - loss: 7289.4980
+Epoch 140/300
+1/1 [==============================] - 0s 997us/step - loss: 7089.9893
+Epoch 141/300
+1/1 [==============================] - 0s 995us/step - loss: 6787.4956
+Epoch 142/300
+1/1 [==============================] - 0s 997us/step - loss: 6512.4902
+Epoch 143/300
+1/1 [==============================] - 0s 997us/step - loss: 6392.5811
+Epoch 144/300
+1/1 [==============================] - 0s 2ms/step - loss: 6878.7412
+Epoch 145/300
+1/1 [==============================] - 0s 998us/step - loss: 7156.6772
+Epoch 146/300
+1/1 [==============================] - 0s 2ms/step - loss: 6265.9727
+Epoch 147/300
+1/1 [==============================] - 0s 997us/step - loss: 6281.2642
+Epoch 148/300
+1/1 [==============================] - 0s 997us/step - loss: 6508.6460
+Epoch 149/300
+1/1 [==============================] - 0s 2ms/step - loss: 6519.3511
+Epoch 150/300
+1/1 [==============================] - 0s 997us/step - loss: 6244.5864
+Epoch 151/300
+1/1 [==============================] - 0s 997us/step - loss: 5902.6465
+Epoch 152/300
+1/1 [==============================] - 0s 2ms/step - loss: 5908.3589
+Epoch 153/300
+1/1 [==============================] - 0s 997us/step - loss: 5988.9541
+Epoch 154/300
+1/1 [==============================] - 0s 998us/step - loss: 5805.5327
+Epoch 155/300
+1/1 [==============================] - 0s 2ms/step - loss: 5527.4331
+Epoch 156/300
+1/1 [==============================] - 0s 2ms/step - loss: 5523.8447
+Epoch 157/300
+1/1 [==============================] - 0s 997us/step - loss: 5472.3086
+Epoch 158/300
+1/1 [==============================] - 0s 997us/step - loss: 5342.3364
+Epoch 159/300
+1/1 [==============================] - 0s 997us/step - loss: 5338.8926
+Epoch 160/300
+1/1 [==============================] - 0s 2ms/step - loss: 5316.3228
+Epoch 161/300
+1/1 [==============================] - 0s 997us/step - loss: 5260.4629
+Epoch 162/300
+1/1 [==============================] - 0s 998us/step - loss: 5196.2729
+Epoch 163/300
+1/1 [==============================] - 0s 998us/step - loss: 5134.4648
+Epoch 164/300
+1/1 [==============================] - 0s 998us/step - loss: 5116.8691
+Epoch 165/300
+1/1 [==============================] - 0s 997us/step - loss: 5035.6958
+Epoch 166/300
+1/1 [==============================] - 0s 997us/step - loss: 4981.7217
+Epoch 167/300
+1/1 [==============================] - 0s 997us/step - loss: 4932.4175
+Epoch 168/300
+1/1 [==============================] - 0s 2ms/step - loss: 4873.0850
+Epoch 169/300
+1/1 [==============================] - 0s 998us/step - loss: 4790.8877
+Epoch 170/300
+1/1 [==============================] - 0s 996us/step - loss: 4740.1396
+Epoch 171/300
+1/1 [==============================] - 0s 997us/step - loss: 4701.1201
+Epoch 172/300
+1/1 [==============================] - 0s 997us/step - loss: 4653.3589
+Epoch 173/300
+1/1 [==============================] - 0s 2ms/step - loss: 4594.5352
+Epoch 174/300
+1/1 [==============================] - 0s 997us/step - loss: 4522.8618
+Epoch 175/300
+1/1 [==============================] - 0s 998us/step - loss: 4375.0513
+Epoch 176/300
+1/1 [==============================] - 0s 996us/step - loss: 4229.5786
+Epoch 177/300
+1/1 [==============================] - 0s 998us/step - loss: 3562.9001
+Epoch 178/300
+1/1 [==============================] - 0s 998us/step - loss: 3472.7207
+Epoch 179/300
+1/1 [==============================] - 0s 3ms/step - loss: 3417.5823
+Epoch 180/300
+1/1 [==============================] - 0s 997us/step - loss: 3410.1045
+Epoch 181/300
+1/1 [==============================] - 0s 997us/step - loss: 3375.1841
+Epoch 182/300
+1/1 [==============================] - 0s 996us/step - loss: 3300.0042
+Epoch 183/300
+1/1 [==============================] - 0s 2ms/step - loss: 3216.1460
+Epoch 184/300
+1/1 [==============================] - 0s 997us/step - loss: 3183.1018
+Epoch 185/300
+1/1 [==============================] - 0s 997us/step - loss: 2922.5725
+Epoch 186/300
+1/1 [==============================] - 0s 999us/step - loss: 2873.4194
+Epoch 187/300
+1/1 [==============================] - 0s 997us/step - loss: 2870.9277
+Epoch 188/300
+1/1 [==============================] - 0s 2ms/step - loss: 2828.3149
+Epoch 189/300
+1/1 [==============================] - 0s 2ms/step - loss: 2779.6035
+Epoch 190/300
+1/1 [==============================] - 0s 994us/step - loss: 2715.7781
+Epoch 191/300
+1/1 [==============================] - 0s 0s/step - loss: 2676.8699
+Epoch 192/300
+1/1 [==============================] - 0s 996us/step - loss: 2631.1885
+Epoch 193/300
+1/1 [==============================] - 0s 994us/step - loss: 2575.4446
+Epoch 194/300
+1/1 [==============================] - 0s 2ms/step - loss: 2515.0728
+Epoch 195/300
+1/1 [==============================] - 0s 997us/step - loss: 2456.2422
+Epoch 196/300
+1/1 [==============================] - 0s 998us/step - loss: 2413.0076
+Epoch 197/300
+1/1 [==============================] - 0s 2ms/step - loss: 2362.3677
+Epoch 198/300
+1/1 [==============================] - 0s 998us/step - loss: 2286.4121
+Epoch 199/300
+1/1 [==============================] - 0s 2ms/step - loss: 2235.8762
+Epoch 200/300
+1/1 [==============================] - 0s 997us/step - loss: 2185.9602
+Epoch 201/300
+1/1 [==============================] - 0s 3ms/step - loss: 2142.1841
+Epoch 202/300
+1/1 [==============================] - 0s 998us/step - loss: 2109.8569
+Epoch 203/300
+1/1 [==============================] - 0s 997us/step - loss: 2073.7544
+Epoch 204/300
+1/1 [==============================] - 0s 2ms/step - loss: 2052.5867
+Epoch 205/300
+1/1 [==============================] - 0s 997us/step - loss: 2020.9749
+Epoch 206/300
+1/1 [==============================] - 0s 2ms/step - loss: 1977.6603
+Epoch 207/300
+1/1 [==============================] - 0s 998us/step - loss: 1938.3020
+Epoch 208/300
+1/1 [==============================] - 0s 997us/step - loss: 1901.7596
+Epoch 209/300
+1/1 [==============================] - 0s 2ms/step - loss: 1856.5608
+Epoch 210/300
+1/1 [==============================] - 0s 998us/step - loss: 1815.6956
+Epoch 211/300
+1/1 [==============================] - 0s 997us/step - loss: 1764.8512
+Epoch 212/300
+1/1 [==============================] - 0s 2ms/step - loss: 1734.9343
+Epoch 213/300
+1/1 [==============================] - 0s 998us/step - loss: 1706.5187
+Epoch 214/300
+1/1 [==============================] - 0s 997us/step - loss: 1676.6281
+Epoch 215/300
+1/1 [==============================] - 0s 997us/step - loss: 1640.1281
+Epoch 216/300
+1/1 [==============================] - 0s 2ms/step - loss: 1610.9640
+Epoch 217/300
+1/1 [==============================] - 0s 2ms/step - loss: 1574.4934
+Epoch 218/300
+1/1 [==============================] - 0s 995us/step - loss: 1539.2114
+Epoch 219/300
+1/1 [==============================] - 0s 2ms/step - loss: 1504.7734
+Epoch 220/300
+1/1 [==============================] - 0s 2ms/step - loss: 1474.2435
+Epoch 221/300
+1/1 [==============================] - 0s 997us/step - loss: 1445.9561
+Epoch 222/300
+1/1 [==============================] - 0s 998us/step - loss: 1413.1042
+Epoch 223/300
+1/1 [==============================] - 0s 998us/step - loss: 1384.0679
+Epoch 224/300
+1/1 [==============================] - 0s 996us/step - loss: 1354.2633
+Epoch 225/300
+1/1 [==============================] - 0s 998us/step - loss: 1319.3009
+Epoch 226/300
+1/1 [==============================] - 0s 998us/step - loss: 1287.9368
+Epoch 227/300
+1/1 [==============================] - 0s 995us/step - loss: 1260.3530
+Epoch 228/300
+1/1 [==============================] - 0s 3ms/step - loss: 1228.9290
+Epoch 229/300
+1/1 [==============================] - 0s 2ms/step - loss: 1197.3835
+Epoch 230/300
+1/1 [==============================] - 0s 998us/step - loss: 1166.0325
+Epoch 231/300
+1/1 [==============================] - 0s 997us/step - loss: 1126.2914
+Epoch 232/300
+1/1 [==============================] - 0s 997us/step - loss: 1073.4561
+Epoch 233/300
+1/1 [==============================] - 0s 2ms/step - loss: 1018.1331
+Epoch 234/300
+1/1 [==============================] - 0s 997us/step - loss: 999.7752
+Epoch 235/300
+1/1 [==============================] - 0s 997us/step - loss: 960.3574
+Epoch 236/300
+1/1 [==============================] - 0s 997us/step - loss: 913.3716
+Epoch 237/300
+1/1 [==============================] - 0s 997us/step - loss: 887.9609
+Epoch 238/300
+1/1 [==============================] - 0s 997us/step - loss: 858.8340
+Epoch 239/300
+1/1 [==============================] - 0s 3ms/step - loss: 818.4901
+Epoch 240/300
+1/1 [==============================] - 0s 2ms/step - loss: 779.9460
+Epoch 241/300
+1/1 [==============================] - 0s 2ms/step - loss: 752.9090
+Epoch 242/300
+1/1 [==============================] - 0s 996us/step - loss: 723.4637
+Epoch 243/300
+1/1 [==============================] - 0s 996us/step - loss: 690.1978
+Epoch 244/300
+1/1 [==============================] - 0s 997us/step - loss: 664.4454
+Epoch 245/300
+1/1 [==============================] - 0s 999us/step - loss: 635.5659
+Epoch 246/300
+1/1 [==============================] - 0s 998us/step - loss: 610.3550
+Epoch 247/300
+1/1 [==============================] - 0s 997us/step - loss: 572.9818
+Epoch 248/300
+1/1 [==============================] - 0s 2ms/step - loss: 536.0905
+Epoch 249/300
+1/1 [==============================] - 0s 997us/step - loss: 511.7079
+Epoch 250/300
+1/1 [==============================] - 0s 2ms/step - loss: 490.5086
+Epoch 251/300
+1/1 [==============================] - 0s 1000us/step - loss: 493.9599
+Epoch 252/300
+1/1 [==============================] - 0s 2ms/step - loss: 440.2786
+Epoch 253/300
+1/1 [==============================] - 0s 991us/step - loss: 408.8806
+Epoch 254/300
+1/1 [==============================] - 0s 997us/step - loss: 385.7681
+Epoch 255/300
+1/1 [==============================] - 0s 997us/step - loss: 370.0820
+Epoch 256/300
+1/1 [==============================] - 0s 997us/step - loss: 349.8708
+Epoch 257/300
+1/1 [==============================] - 0s 997us/step - loss: 324.6033
+Epoch 258/300
+1/1 [==============================] - 0s 2ms/step - loss: 313.4442
+Epoch 259/300
+1/1 [==============================] - 0s 2ms/step - loss: 292.8094
+Epoch 260/300
+1/1 [==============================] - 0s 997us/step - loss: 280.5646
+Epoch 261/300
+1/1 [==============================] - 0s 996us/step - loss: 282.3565
+Epoch 262/300
+1/1 [==============================] - 0s 997us/step - loss: 313.6263
+Epoch 263/300
+1/1 [==============================] - 0s 997us/step - loss: 325.5816
+Epoch 264/300
+1/1 [==============================] - 0s 996us/step - loss: 278.4414
+Epoch 265/300
+1/1 [==============================] - 0s 988us/step - loss: 258.8051
+Epoch 266/300
+1/1 [==============================] - 0s 997us/step - loss: 226.5366
+Epoch 267/300
+1/1 [==============================] - 0s 2ms/step - loss: 233.0964
+Epoch 268/300
+1/1 [==============================] - 0s 996us/step - loss: 219.8649
+Epoch 269/300
+1/1 [==============================] - 0s 2ms/step - loss: 198.5603
+Epoch 270/300
+1/1 [==============================] - 0s 998us/step - loss: 192.1272
+Epoch 271/300
+1/1 [==============================] - 0s 2ms/step - loss: 181.5412
+Epoch 272/300
+1/1 [==============================] - 0s 994us/step - loss: 178.9059
+Epoch 273/300
+1/1 [==============================] - 0s 2ms/step - loss: 165.8824
+Epoch 274/300
+1/1 [==============================] - 0s 997us/step - loss: 160.1717
+Epoch 275/300
+1/1 [==============================] - 0s 997us/step - loss: 160.1724
+Epoch 276/300
+1/1 [==============================] - 0s 2ms/step - loss: 155.4524
+Epoch 277/300
+1/1 [==============================] - 0s 997us/step - loss: 156.4689
+Epoch 278/300
+1/1 [==============================] - 0s 998us/step - loss: 138.7973
+Epoch 279/300
+1/1 [==============================] - 0s 2ms/step - loss: 147.1880
+Epoch 280/300
+1/1 [==============================] - 0s 3ms/step - loss: 138.3788
+Epoch 281/300
+1/1 [==============================] - 0s 998us/step - loss: 141.2208
+Epoch 282/300
+1/1 [==============================] - 0s 995us/step - loss: 124.9313
+Epoch 283/300
+1/1 [==============================] - 0s 2ms/step - loss: 136.5500
+Epoch 284/300
+1/1 [==============================] - 0s 998us/step - loss: 111.3298
+Epoch 285/300
+1/1 [==============================] - 0s 999us/step - loss: 133.9456
+Epoch 286/300
+1/1 [==============================] - 0s 995us/step - loss: 113.9201
+Epoch 287/300
+1/1 [==============================] - 0s 997us/step - loss: 107.4884
+Epoch 288/300
+1/1 [==============================] - 0s 2ms/step - loss: 111.1145
+Epoch 289/300
+1/1 [==============================] - 0s 997us/step - loss: 99.5032
+Epoch 290/300
+1/1 [==============================] - 0s 998us/step - loss: 99.7167
+Epoch 291/300
+1/1 [==============================] - 0s 2ms/step - loss: 90.4883
+Epoch 292/300
+1/1 [==============================] - 0s 997us/step - loss: 93.3076
+Epoch 293/300
+1/1 [==============================] - 0s 997us/step - loss: 82.9572
+Epoch 294/300
+1/1 [==============================] - 0s 996us/step - loss: 83.2290
+Epoch 295/300
+1/1 [==============================] - 0s 997us/step - loss: 78.9338
+Epoch 296/300
+1/1 [==============================] - 0s 997us/step - loss: 80.7258
+Epoch 297/300
+1/1 [==============================] - 0s 998us/step - loss: 76.6194
+Epoch 298/300
+1/1 [==============================] - 0s 997us/step - loss: 73.7697
+Epoch 299/300
+1/1 [==============================] - 0s 2ms/step - loss: 72.0977
+Epoch 300/300
+1/1 [==============================] - 0s 998us/step - loss: 67.1530
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{65}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<tensorflow.python.keras.callbacks.History at 0x224ed4a35e0>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{66}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x\PYZus{}input} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{560}\PY{p}{,} \PY{l+m+mi}{417}\PY{p}{,} \PY{l+m+mi}{304}\PY{p}{]}\PY{p}{)}
+\PY{n}{temp\PYZus{}input} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{x\PYZus{}input}\PY{p}{)}
+\PY{n}{lst\PYZus{}output} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{i}\PY{o}{=}\PY{l+m+mi}{0}
+\PY{k}{while}\PY{p}{(}\PY{n}{i}\PY{o}{\PYZlt{}}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{temp\PYZus{}input}\PY{p}{)}\PY{o}{\PYZgt{}}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{:}
+        \PY{n}{x\PYZus{}input} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{temp\PYZus{}input}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ day input }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{,}\PY{n}{x\PYZus{}input}\PY{p}{)}\PY{p}{)}
+        \PY{n}{x\PYZus{}input} \PY{o}{=} \PY{n}{x\PYZus{}input}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{n\PYZus{}step}\PY{p}{,} \PY{n}{n\PYZus{}features}\PY{p}{)}\PY{p}{)}
+        \PY{n}{yhat} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{x\PYZus{}input}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ day output }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{,}\PY{n}{yhat}\PY{p}{)}\PY{p}{)}
+        \PY{n}{temp\PYZus{}input}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{yhat}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{temp\PYZus{}input} \PY{o}{=} \PY{n}{temp\PYZus{}input}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}
+        \PY{n}{lst\PYZus{}output}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{yhat}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{i}\PY{o}{=}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n}{x\PYZus{}input} \PY{o}{=} \PY{n}{x\PYZus{}input}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{n\PYZus{}step}\PY{p}{,} \PY{n}{n\PYZus{}features}\PY{p}{)}\PY{p}{)}
+        \PY{n}{yhat} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{x\PYZus{}input}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{yhat}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{temp\PYZus{}input}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{yhat}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{lst\PYZus{}output}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{yhat}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{i}\PY{o}{=}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}
+        
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{lst\PYZus{}output}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[341.61176]
+1 day input [417.         304.         341.61175537]
+1 day output [[326.00635]]
+2 day input [304.         341.61175537 326.00634766]
+2 day output [[152.53682]]
+3 day input [341.61176 326.00635 152.53682]
+3 day output [[297.56042]]
+4 day input [326.00635 152.53682 297.56042]
+4 day output [[411.17044]]
+5 day input [152.53682 297.56042 411.17044]
+5 day output [[173.91277]]
+6 day input [297.56042 411.17044 173.91277]
+6 day output [[457.8365]]
+7 day input [411.17044 173.91277 457.8365 ]
+7 day output [[414.61005]]
+8 day input [173.91277 457.8365  414.61005]
+8 day output [[189.6428]]
+9 day input [457.8365  414.61005 189.6428 ]
+9 day output [[236.24677]]
+[341.61176, 326.00635, 152.53682, 297.56042, 411.17044, 173.91277, 457.8365,
+414.61005, 189.6428, 236.24677]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{67}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Neg\PYZus{}pred} \PY{o}{=} \PY{n}{lst\PYZus{}output}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{68}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Neg\PYZus{}pred}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{68}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[341.61176,
+ 326.00635,
+ 152.53682,
+ 297.56042,
+ 411.17044,
+ 173.91277,
+ 457.8365,
+ 414.61005,
+ 189.6428,
+ 236.24677]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{neu-lstm}{%
+\section{Neu LSTM}\label{neu-lstm}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{69}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{prepare\PYZus{}data}\PY{p}{(}\PY{n}{data}\PY{p}{,}\PY{n}{n\PYZus{}step}\PY{p}{)}\PY{p}{:}
+    \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{o}{=}\PY{p}{[}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+        \PY{n}{end\PYZus{}ix} \PY{o}{=} \PY{n}{i} \PY{o}{+} \PY{n}{n\PYZus{}step}
+        \PY{k}{if} \PY{n}{end\PYZus{}ix} \PY{o}{\PYZgt{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+            \PY{k}{break}
+        \PY{n}{seq\PYZus{}x}\PY{p}{,} \PY{n}{seq\PYZus{}y} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{n}{i}\PY{p}{:}\PY{n}{end\PYZus{}ix}\PY{p}{]}\PY{p}{,} \PY{n}{data}\PY{p}{[}\PY{n}{end\PYZus{}ix}\PY{p}{]}
+        \PY{n}{x}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{seq\PYZus{}x}\PY{p}{)}
+        \PY{n}{y}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{seq\PYZus{}y}\PY{p}{)}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{70}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Neu\PYZus{}data} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{Neu}
+\PY{n}{n\PYZus{}step} \PY{o}{=} \PY{l+m+mi}{3}
+\PY{n}{x}\PY{p}{,}\PY{n}{y} \PY{o}{=} \PY{n}{prepare\PYZus{}data}\PY{p}{(}\PY{n}{Neu\PYZus{}data}\PY{p}{,} \PY{n}{n\PYZus{}step}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{71}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[429 225 285]
+ [225 285 198]
+ [285 198 447]
+ [198 447 557]
+ [447 557 736]
+ [557 736 400]
+ [736 400 486]
+ [400 486 433]
+ [486 433 476]
+ [433 476 485]
+ [476 485 485]
+ [485 485 358]
+ [485 358 358]
+ [358 358 382]
+ [358 382 510]
+ [382 510 278]
+ [510 278 336]
+ [278 336 439]
+ [336 439 586]
+ [439 586 323]
+ [586 323 189]
+ [323 189 338]
+ [189 338 544]
+ [338 544 361]
+ [544 361 662]
+ [361 662 354]
+ [662 354 554]
+ [354 554 329]
+ [554 329  86]
+ [329  86 135]
+ [ 86 135 210]]
+[198 447 557 736 400 486 433 476 485 485 358 358 382 510 278 336 439 586
+ 323 189 338 544 361 662 354 554 329  86 135 210 257]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{72}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{72}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(31, 3)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{73}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{n\PYZus{}features} \PY{o}{=} \PY{l+m+mi}{1}
+\PY{n}{x} \PY{o}{=} \PY{n}{x}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{n\PYZus{}features}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{74}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{74}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(31, 3, 1)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{75}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model} \PY{o}{=} \PY{n}{Sequential}\PY{p}{(}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{LSTM}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{return\PYZus{}sequences}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{input\PYZus{}shape}\PY{o}{=}\PY{p}{(}\PY{n}{n\PYZus{}step}\PY{p}{,} \PY{n}{n\PYZus{}features}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{LSTM}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{compile}\PY{p}{(}\PY{n}{optimizer}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{adam}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{loss}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mse}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{epochs}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 1/300
+1/1 [==============================] - 0s 0s/step - loss: 174112.5156
+Epoch 2/300
+1/1 [==============================] - 0s 994us/step - loss: 173219.0156
+Epoch 3/300
+1/1 [==============================] - 0s 1ms/step - loss: 171990.1562
+Epoch 4/300
+1/1 [==============================] - 0s 1ms/step - loss: 170402.1250
+Epoch 5/300
+1/1 [==============================] - 0s 998us/step - loss: 168226.2656
+Epoch 6/300
+1/1 [==============================] - 0s 997us/step - loss: 166219.5625
+Epoch 7/300
+1/1 [==============================] - 0s 1ms/step - loss: 164486.9688
+Epoch 8/300
+1/1 [==============================] - 0s 998us/step - loss: 162872.4219
+Epoch 9/300
+1/1 [==============================] - 0s 1ms/step - loss: 161417.8125
+Epoch 10/300
+1/1 [==============================] - 0s 998us/step - loss: 159999.1719
+Epoch 11/300
+1/1 [==============================] - 0s 999us/step - loss: 158479.2031
+Epoch 12/300
+1/1 [==============================] - 0s 0s/step - loss: 156763.6250
+Epoch 13/300
+1/1 [==============================] - 0s 1ms/step - loss: 154763.6406
+Epoch 14/300
+1/1 [==============================] - 0s 998us/step - loss: 152540.5000
+Epoch 15/300
+1/1 [==============================] - 0s 998us/step - loss: 150295.0469
+Epoch 16/300
+1/1 [==============================] - 0s 998us/step - loss: 147737.9062
+Epoch 17/300
+1/1 [==============================] - 0s 995us/step - loss: 144727.1094
+Epoch 18/300
+1/1 [==============================] - 0s 998us/step - loss: 141517.3594
+Epoch 19/300
+1/1 [==============================] - 0s 996us/step - loss: 138302.0156
+Epoch 20/300
+1/1 [==============================] - 0s 998us/step - loss: 134793.1719
+Epoch 21/300
+1/1 [==============================] - 0s 997us/step - loss: 130822.4688
+Epoch 22/300
+1/1 [==============================] - 0s 998us/step - loss: 126603.7109
+Epoch 23/300
+1/1 [==============================] - 0s 997us/step - loss: 121931.1797
+Epoch 24/300
+1/1 [==============================] - 0s 997us/step - loss: 116903.5391
+Epoch 25/300
+1/1 [==============================] - 0s 998us/step - loss: 111447.7344
+Epoch 26/300
+1/1 [==============================] - 0s 997us/step - loss: 105351.0156
+Epoch 27/300
+1/1 [==============================] - 0s 998us/step - loss: 98725.5312
+Epoch 28/300
+1/1 [==============================] - 0s 996us/step - loss: 91575.9922
+Epoch 29/300
+1/1 [==============================] - 0s 997us/step - loss: 83518.4766
+Epoch 30/300
+1/1 [==============================] - 0s 996us/step - loss: 75187.8281
+Epoch 31/300
+1/1 [==============================] - 0s 998us/step - loss: 66693.3125
+Epoch 32/300
+1/1 [==============================] - 0s 995us/step - loss: 59065.7656
+Epoch 33/300
+1/1 [==============================] - 0s 2ms/step - loss: 51874.0547
+Epoch 34/300
+1/1 [==============================] - 0s 2ms/step - loss: 46417.0352
+Epoch 35/300
+1/1 [==============================] - 0s 998us/step - loss: 42115.8320
+Epoch 36/300
+1/1 [==============================] - 0s 999us/step - loss: 38931.7812
+Epoch 37/300
+1/1 [==============================] - 0s 2ms/step - loss: 37102.4688
+Epoch 38/300
+1/1 [==============================] - 0s 998us/step - loss: 37118.3398
+Epoch 39/300
+1/1 [==============================] - 0s 2ms/step - loss: 37688.7969
+Epoch 40/300
+1/1 [==============================] - 0s 2ms/step - loss: 37894.8750
+Epoch 41/300
+1/1 [==============================] - 0s 997us/step - loss: 38148.8242
+Epoch 42/300
+1/1 [==============================] - 0s 998us/step - loss: 38115.7930
+Epoch 43/300
+1/1 [==============================] - 0s 2ms/step - loss: 37671.2812
+Epoch 44/300
+1/1 [==============================] - 0s 2ms/step - loss: 36901.0352
+Epoch 45/300
+1/1 [==============================] - 0s 2ms/step - loss: 35904.0273
+Epoch 46/300
+1/1 [==============================] - 0s 998us/step - loss: 34550.1641
+Epoch 47/300
+1/1 [==============================] - 0s 2ms/step - loss: 32787.5898
+Epoch 48/300
+1/1 [==============================] - 0s 997us/step - loss: 31136.7695
+Epoch 49/300
+1/1 [==============================] - 0s 997us/step - loss: 30832.5684
+Epoch 50/300
+1/1 [==============================] - 0s 0s/step - loss: 30800.9023
+Epoch 51/300
+1/1 [==============================] - 0s 997us/step - loss: 30716.8301
+Epoch 52/300
+1/1 [==============================] - 0s 997us/step - loss: 30393.6094
+Epoch 53/300
+1/1 [==============================] - 0s 997us/step - loss: 30139.1543
+Epoch 54/300
+1/1 [==============================] - ETA: 0s - loss: 29824.759 - 0s 997us/step
+- loss: 29824.7598
+Epoch 55/300
+1/1 [==============================] - 0s 998us/step - loss: 29407.0508
+Epoch 56/300
+1/1 [==============================] - 0s 997us/step - loss: 28917.1719
+Epoch 57/300
+1/1 [==============================] - 0s 2ms/step - loss: 28184.8711
+Epoch 58/300
+1/1 [==============================] - 0s 2ms/step - loss: 27527.6777
+Epoch 59/300
+1/1 [==============================] - 0s 998us/step - loss: 27105.5000
+Epoch 60/300
+1/1 [==============================] - 0s 998us/step - loss: 26528.2227
+Epoch 61/300
+1/1 [==============================] - 0s 998us/step - loss: 25698.1133
+Epoch 62/300
+1/1 [==============================] - 0s 2ms/step - loss: 24480.2988
+Epoch 63/300
+1/1 [==============================] - 0s 997us/step - loss: 24779.6582
+Epoch 64/300
+1/1 [==============================] - 0s 998us/step - loss: 23873.8008
+Epoch 65/300
+1/1 [==============================] - 0s 997us/step - loss: 23332.7227
+Epoch 66/300
+1/1 [==============================] - 0s 996us/step - loss: 22339.0723
+Epoch 67/300
+1/1 [==============================] - 0s 1000us/step - loss: 21213.0762
+Epoch 68/300
+1/1 [==============================] - 0s 998us/step - loss: 20873.6543
+Epoch 69/300
+1/1 [==============================] - 0s 2ms/step - loss: 19558.8418
+Epoch 70/300
+1/1 [==============================] - 0s 998us/step - loss: 19553.6680
+Epoch 71/300
+1/1 [==============================] - 0s 998us/step - loss: 19113.9883
+Epoch 72/300
+1/1 [==============================] - 0s 997us/step - loss: 18750.7871
+Epoch 73/300
+1/1 [==============================] - 0s 2ms/step - loss: 18522.9219
+Epoch 74/300
+1/1 [==============================] - 0s 2ms/step - loss: 17803.0625
+Epoch 75/300
+1/1 [==============================] - 0s 997us/step - loss: 16460.4121
+Epoch 76/300
+1/1 [==============================] - 0s 996us/step - loss: 15997.5195
+Epoch 77/300
+1/1 [==============================] - 0s 996us/step - loss: 15671.0742
+Epoch 78/300
+1/1 [==============================] - 0s 998us/step - loss: 14952.5625
+Epoch 79/300
+1/1 [==============================] - 0s 997us/step - loss: 14602.2773
+Epoch 80/300
+1/1 [==============================] - 0s 2ms/step - loss: 13456.7480
+Epoch 81/300
+1/1 [==============================] - 0s 998us/step - loss: 14882.8916
+Epoch 82/300
+1/1 [==============================] - 0s 998us/step - loss: 13091.0811
+Epoch 83/300
+1/1 [==============================] - 0s 997us/step - loss: 13825.3203
+Epoch 84/300
+1/1 [==============================] - 0s 2ms/step - loss: 13362.6484
+Epoch 85/300
+1/1 [==============================] - 0s 2ms/step - loss: 13421.6396
+Epoch 86/300
+1/1 [==============================] - 0s 999us/step - loss: 13330.7295
+Epoch 87/300
+1/1 [==============================] - 0s 997us/step - loss: 12661.9736
+Epoch 88/300
+1/1 [==============================] - 0s 997us/step - loss: 12827.8711
+Epoch 89/300
+1/1 [==============================] - 0s 997us/step - loss: 12099.0166
+Epoch 90/300
+1/1 [==============================] - 0s 997us/step - loss: 12492.8721
+Epoch 91/300
+1/1 [==============================] - 0s 997us/step - loss: 12194.5684
+Epoch 92/300
+1/1 [==============================] - 0s 1ms/step - loss: 11790.2109
+Epoch 93/300
+1/1 [==============================] - 0s 997us/step - loss: 11743.3955
+Epoch 94/300
+1/1 [==============================] - 0s 998us/step - loss: 11583.3213
+Epoch 95/300
+1/1 [==============================] - 0s 2ms/step - loss: 11295.7041
+Epoch 96/300
+1/1 [==============================] - 0s 2ms/step - loss: 11023.3486
+Epoch 97/300
+1/1 [==============================] - 0s 998us/step - loss: 11177.4727
+Epoch 98/300
+1/1 [==============================] - 0s 1ms/step - loss: 10982.8242
+Epoch 99/300
+1/1 [==============================] - 0s 997us/step - loss: 10933.1162
+Epoch 100/300
+1/1 [==============================] - 0s 996us/step - loss: 10570.3828
+Epoch 101/300
+1/1 [==============================] - 0s 995us/step - loss: 10150.4619
+Epoch 102/300
+1/1 [==============================] - 0s 998us/step - loss: 10076.7754
+Epoch 103/300
+1/1 [==============================] - 0s 997us/step - loss: 10342.1494
+Epoch 104/300
+1/1 [==============================] - 0s 2ms/step - loss: 9672.5742
+Epoch 105/300
+1/1 [==============================] - 0s 2ms/step - loss: 10154.9629
+Epoch 106/300
+1/1 [==============================] - 0s 2ms/step - loss: 9616.6328
+Epoch 107/300
+1/1 [==============================] - 0s 998us/step - loss: 10035.2920
+Epoch 108/300
+1/1 [==============================] - 0s 2ms/step - loss: 11010.1836
+Epoch 109/300
+1/1 [==============================] - 0s 997us/step - loss: 9758.9150
+Epoch 110/300
+1/1 [==============================] - 0s 996us/step - loss: 9994.6279
+Epoch 111/300
+1/1 [==============================] - 0s 998us/step - loss: 9434.8125
+Epoch 112/300
+1/1 [==============================] - 0s 2ms/step - loss: 9437.2441
+Epoch 113/300
+1/1 [==============================] - 0s 2ms/step - loss: 9398.3809
+Epoch 114/300
+1/1 [==============================] - 0s 997us/step - loss: 9195.0674
+Epoch 115/300
+1/1 [==============================] - 0s 3ms/step - loss: 8785.2617
+Epoch 116/300
+1/1 [==============================] - 0s 2ms/step - loss: 8817.7256
+Epoch 117/300
+1/1 [==============================] - 0s 998us/step - loss: 8558.4395
+Epoch 118/300
+1/1 [==============================] - 0s 2ms/step - loss: 8491.4004
+Epoch 119/300
+1/1 [==============================] - 0s 996us/step - loss: 8453.1523
+Epoch 120/300
+1/1 [==============================] - 0s 997us/step - loss: 8052.5566
+Epoch 121/300
+1/1 [==============================] - 0s 997us/step - loss: 8059.4731
+Epoch 122/300
+1/1 [==============================] - 0s 998us/step - loss: 7755.4121
+Epoch 123/300
+1/1 [==============================] - 0s 2ms/step - loss: 7496.4883
+Epoch 124/300
+1/1 [==============================] - 0s 998us/step - loss: 7367.3403
+Epoch 125/300
+1/1 [==============================] - 0s 997us/step - loss: 7586.6846
+Epoch 126/300
+1/1 [==============================] - 0s 2ms/step - loss: 12626.2959
+Epoch 127/300
+1/1 [==============================] - 0s 998us/step - loss: 14735.1846
+Epoch 128/300
+1/1 [==============================] - 0s 997us/step - loss: 11403.1621
+Epoch 129/300
+1/1 [==============================] - 0s 997us/step - loss: 12763.8828
+Epoch 130/300
+1/1 [==============================] - 0s 997us/step - loss: 18126.8750
+Epoch 131/300
+1/1 [==============================] - 0s 998us/step - loss: 9739.1113
+Epoch 132/300
+1/1 [==============================] - 0s 997us/step - loss: 12974.1484
+Epoch 133/300
+1/1 [==============================] - 0s 997us/step - loss: 14588.8506
+Epoch 134/300
+1/1 [==============================] - 0s 998us/step - loss: 13574.0635
+Epoch 135/300
+1/1 [==============================] - 0s 998us/step - loss: 11320.2480
+Epoch 136/300
+1/1 [==============================] - 0s 2ms/step - loss: 10902.3311
+Epoch 137/300
+1/1 [==============================] - 0s 2ms/step - loss: 15499.8486
+Epoch 138/300
+1/1 [==============================] - 0s 2ms/step - loss: 10050.8164
+Epoch 139/300
+1/1 [==============================] - 0s 998us/step - loss: 11519.1230
+Epoch 140/300
+1/1 [==============================] - 0s 2ms/step - loss: 13393.5752
+Epoch 141/300
+1/1 [==============================] - 0s 2ms/step - loss: 13580.6738
+Epoch 142/300
+1/1 [==============================] - 0s 2ms/step - loss: 12333.2295
+Epoch 143/300
+1/1 [==============================] - 0s 2ms/step - loss: 11167.6074
+Epoch 144/300
+1/1 [==============================] - 0s 998us/step - loss: 10095.7959
+Epoch 145/300
+1/1 [==============================] - 0s 998us/step - loss: 10458.6816
+Epoch 146/300
+1/1 [==============================] - 0s 997us/step - loss: 10929.5127
+Epoch 147/300
+1/1 [==============================] - 0s 997us/step - loss: 10477.8506
+Epoch 148/300
+1/1 [==============================] - 0s 998us/step - loss: 9360.9199
+Epoch 149/300
+1/1 [==============================] - 0s 2ms/step - loss: 8546.0234
+Epoch 150/300
+1/1 [==============================] - 0s 2ms/step - loss: 8696.9756
+Epoch 151/300
+1/1 [==============================] - 0s 998us/step - loss: 9021.8926
+Epoch 152/300
+1/1 [==============================] - 0s 998us/step - loss: 9137.7070
+Epoch 153/300
+1/1 [==============================] - 0s 2ms/step - loss: 8582.6533
+Epoch 154/300
+1/1 [==============================] - 0s 997us/step - loss: 8429.9463
+Epoch 155/300
+1/1 [==============================] - 0s 996us/step - loss: 8476.7080
+Epoch 156/300
+1/1 [==============================] - 0s 997us/step - loss: 8197.6484
+Epoch 157/300
+1/1 [==============================] - 0s 2ms/step - loss: 7989.0396
+Epoch 158/300
+1/1 [==============================] - 0s 997us/step - loss: 7899.1631
+Epoch 159/300
+1/1 [==============================] - 0s 2ms/step - loss: 7881.4302
+Epoch 160/300
+1/1 [==============================] - 0s 997us/step - loss: 7674.8452
+Epoch 161/300
+1/1 [==============================] - 0s 2ms/step - loss: 7348.7290
+Epoch 162/300
+1/1 [==============================] - 0s 997us/step - loss: 7295.4971
+Epoch 163/300
+1/1 [==============================] - 0s 996us/step - loss: 7475.8618
+Epoch 164/300
+1/1 [==============================] - 0s 996us/step - loss: 7317.7046
+Epoch 165/300
+1/1 [==============================] - 0s 998us/step - loss: 7033.7246
+Epoch 166/300
+1/1 [==============================] - 0s 997us/step - loss: 6902.8633
+Epoch 167/300
+1/1 [==============================] - 0s 998us/step - loss: 6776.6943
+Epoch 168/300
+1/1 [==============================] - 0s 997us/step - loss: 6642.3330
+Epoch 169/300
+1/1 [==============================] - 0s 998us/step - loss: 6452.4365
+Epoch 170/300
+1/1 [==============================] - 0s 998us/step - loss: 6236.5669
+Epoch 171/300
+1/1 [==============================] - 0s 998us/step - loss: 6134.5396
+Epoch 172/300
+1/1 [==============================] - 0s 2ms/step - loss: 5985.0039
+Epoch 173/300
+1/1 [==============================] - 0s 997us/step - loss: 5913.7695
+Epoch 174/300
+1/1 [==============================] - 0s 998us/step - loss: 5649.6909
+Epoch 175/300
+1/1 [==============================] - 0s 2ms/step - loss: 5421.1440
+Epoch 176/300
+1/1 [==============================] - 0s 997us/step - loss: 5409.8730
+Epoch 177/300
+1/1 [==============================] - 0s 997us/step - loss: 5270.3022
+Epoch 178/300
+1/1 [==============================] - 0s 998us/step - loss: 5814.3765
+Epoch 179/300
+1/1 [==============================] - 0s 996us/step - loss: 5463.9106
+Epoch 180/300
+1/1 [==============================] - 0s 998us/step - loss: 5099.9849
+Epoch 181/300
+1/1 [==============================] - 0s 997us/step - loss: 5347.6792
+Epoch 182/300
+1/1 [==============================] - 0s 998us/step - loss: 7548.4019
+Epoch 183/300
+1/1 [==============================] - 0s 2ms/step - loss: 8192.1396
+Epoch 184/300
+1/1 [==============================] - 0s 997us/step - loss: 9020.0771
+Epoch 185/300
+1/1 [==============================] - 0s 2ms/step - loss: 9458.3721
+Epoch 186/300
+1/1 [==============================] - 0s 2ms/step - loss: 9344.2373
+Epoch 187/300
+1/1 [==============================] - 0s 2ms/step - loss: 7820.5986
+Epoch 188/300
+1/1 [==============================] - 0s 997us/step - loss: 7006.2354
+Epoch 189/300
+1/1 [==============================] - 0s 998us/step - loss: 7291.0083
+Epoch 190/300
+1/1 [==============================] - 0s 997us/step - loss: 6164.8721
+Epoch 191/300
+1/1 [==============================] - 0s 997us/step - loss: 7306.2417
+Epoch 192/300
+1/1 [==============================] - 0s 997us/step - loss: 6231.5386
+Epoch 193/300
+1/1 [==============================] - 0s 2ms/step - loss: 7301.3730
+Epoch 194/300
+1/1 [==============================] - 0s 3ms/step - loss: 7347.6333
+Epoch 195/300
+1/1 [==============================] - 0s 998us/step - loss: 6632.5596
+Epoch 196/300
+1/1 [==============================] - 0s 996us/step - loss: 5676.6777
+Epoch 197/300
+1/1 [==============================] - 0s 998us/step - loss: 6924.4434
+Epoch 198/300
+1/1 [==============================] - 0s 998us/step - loss: 7053.6069
+Epoch 199/300
+1/1 [==============================] - 0s 997us/step - loss: 5239.4458
+Epoch 200/300
+1/1 [==============================] - 0s 2ms/step - loss: 5614.7612
+Epoch 201/300
+1/1 [==============================] - 0s 997us/step - loss: 5880.7056
+Epoch 202/300
+1/1 [==============================] - 0s 997us/step - loss: 5569.0503
+Epoch 203/300
+1/1 [==============================] - 0s 2ms/step - loss: 5571.3120
+Epoch 204/300
+1/1 [==============================] - 0s 0s/step - loss: 4945.5132
+Epoch 205/300
+1/1 [==============================] - 0s 997us/step - loss: 5284.8540
+Epoch 206/300
+1/1 [==============================] - 0s 998us/step - loss: 4895.2598
+Epoch 207/300
+1/1 [==============================] - 0s 996us/step - loss: 4621.9092
+Epoch 208/300
+1/1 [==============================] - 0s 2ms/step - loss: 4327.2061
+Epoch 209/300
+1/1 [==============================] - 0s 998us/step - loss: 4348.7788
+Epoch 210/300
+1/1 [==============================] - 0s 997us/step - loss: 4160.2441
+Epoch 211/300
+1/1 [==============================] - 0s 987us/step - loss: 4045.0569
+Epoch 212/300
+1/1 [==============================] - 0s 997us/step - loss: 3859.6240
+Epoch 213/300
+1/1 [==============================] - 0s 997us/step - loss: 3816.6946
+Epoch 214/300
+1/1 [==============================] - 0s 995us/step - loss: 3751.5410
+Epoch 215/300
+1/1 [==============================] - 0s 997us/step - loss: 3691.9072
+Epoch 216/300
+1/1 [==============================] - 0s 998us/step - loss: 3586.8105
+Epoch 217/300
+1/1 [==============================] - 0s 996us/step - loss: 3482.9705
+Epoch 218/300
+1/1 [==============================] - 0s 998us/step - loss: 3398.8752
+Epoch 219/300
+1/1 [==============================] - 0s 997us/step - loss: 3294.1997
+Epoch 220/300
+1/1 [==============================] - 0s 2ms/step - loss: 3149.3547
+Epoch 221/300
+1/1 [==============================] - 0s 996us/step - loss: 3392.0198
+Epoch 222/300
+1/1 [==============================] - 0s 2ms/step - loss: 3016.9788
+Epoch 223/300
+1/1 [==============================] - 0s 998us/step - loss: 3283.0752
+Epoch 224/300
+1/1 [==============================] - 0s 2ms/step - loss: 7947.4727
+Epoch 225/300
+1/1 [==============================] - 0s 2ms/step - loss: 9396.3311
+Epoch 226/300
+1/1 [==============================] - 0s 1ms/step - loss: 9154.2295
+Epoch 227/300
+1/1 [==============================] - 0s 997us/step - loss: 17392.7090
+Epoch 228/300
+1/1 [==============================] - 0s 997us/step - loss: 18264.8574
+Epoch 229/300
+1/1 [==============================] - 0s 997us/step - loss: 15065.4521
+Epoch 230/300
+1/1 [==============================] - 0s 997us/step - loss: 12741.8096
+Epoch 231/300
+1/1 [==============================] - 0s 996us/step - loss: 12263.1934
+Epoch 232/300
+1/1 [==============================] - 0s 2ms/step - loss: 9718.3076
+Epoch 233/300
+1/1 [==============================] - 0s 2ms/step - loss: 10006.7334
+Epoch 234/300
+1/1 [==============================] - 0s 2ms/step - loss: 10758.8701
+Epoch 235/300
+1/1 [==============================] - 0s 2ms/step - loss: 8484.6660
+Epoch 236/300
+1/1 [==============================] - 0s 997us/step - loss: 10379.6895
+Epoch 237/300
+1/1 [==============================] - 0s 998us/step - loss: 8711.3975
+Epoch 238/300
+1/1 [==============================] - 0s 997us/step - loss: 9276.6191
+Epoch 239/300
+1/1 [==============================] - 0s 2ms/step - loss: 8703.7012
+Epoch 240/300
+1/1 [==============================] - 0s 2ms/step - loss: 8819.0918
+Epoch 241/300
+1/1 [==============================] - 0s 3ms/step - loss: 8794.8164
+Epoch 242/300
+1/1 [==============================] - 0s 997us/step - loss: 7924.0088
+Epoch 243/300
+1/1 [==============================] - 0s 997us/step - loss: 8011.8784
+Epoch 244/300
+1/1 [==============================] - 0s 996us/step - loss: 7919.8667
+Epoch 245/300
+1/1 [==============================] - 0s 998us/step - loss: 7371.6050
+Epoch 246/300
+1/1 [==============================] - 0s 997us/step - loss: 6945.8496
+Epoch 247/300
+1/1 [==============================] - 0s 997us/step - loss: 7019.5776
+Epoch 248/300
+1/1 [==============================] - 0s 998us/step - loss: 7052.4541
+Epoch 249/300
+1/1 [==============================] - 0s 2ms/step - loss: 6936.4351
+Epoch 250/300
+1/1 [==============================] - 0s 2ms/step - loss: 6772.7158
+Epoch 251/300
+1/1 [==============================] - 0s 997us/step - loss: 6580.9199
+Epoch 252/300
+1/1 [==============================] - 0s 997us/step - loss: 6421.2876
+Epoch 253/300
+1/1 [==============================] - 0s 2ms/step - loss: 6313.0483
+Epoch 254/300
+1/1 [==============================] - 0s 999us/step - loss: 6236.6401
+Epoch 255/300
+1/1 [==============================] - 0s 2ms/step - loss: 6117.3418
+Epoch 256/300
+1/1 [==============================] - 0s 997us/step - loss: 6129.7979
+Epoch 257/300
+1/1 [==============================] - 0s 997us/step - loss: 5860.1704
+Epoch 258/300
+1/1 [==============================] - 0s 998us/step - loss: 5703.1841
+Epoch 259/300
+1/1 [==============================] - 0s 996us/step - loss: 5605.4458
+Epoch 260/300
+1/1 [==============================] - 0s 998us/step - loss: 5393.4917
+Epoch 261/300
+1/1 [==============================] - 0s 998us/step - loss: 5155.2607
+Epoch 262/300
+1/1 [==============================] - 0s 998us/step - loss: 5043.9014
+Epoch 263/300
+1/1 [==============================] - 0s 998us/step - loss: 4907.7764
+Epoch 264/300
+1/1 [==============================] - 0s 998us/step - loss: 4809.5068
+Epoch 265/300
+1/1 [==============================] - 0s 2ms/step - loss: 4689.5825
+Epoch 266/300
+1/1 [==============================] - 0s 2ms/step - loss: 4614.3477
+Epoch 267/300
+1/1 [==============================] - 0s 997us/step - loss: 4515.5757
+Epoch 268/300
+1/1 [==============================] - 0s 997us/step - loss: 4365.6670
+Epoch 269/300
+1/1 [==============================] - 0s 997us/step - loss: 4216.3013
+Epoch 270/300
+1/1 [==============================] - 0s 2ms/step - loss: 4099.9390
+Epoch 271/300
+1/1 [==============================] - 0s 2ms/step - loss: 4014.7407
+Epoch 272/300
+1/1 [==============================] - 0s 997us/step - loss: 4011.7161
+Epoch 273/300
+1/1 [==============================] - 0s 997us/step - loss: 3876.1313
+Epoch 274/300
+1/1 [==============================] - 0s 2ms/step - loss: 3737.1426
+Epoch 275/300
+1/1 [==============================] - 0s 997us/step - loss: 3603.0830
+Epoch 276/300
+1/1 [==============================] - 0s 2ms/step - loss: 3408.4905
+Epoch 277/300
+1/1 [==============================] - 0s 997us/step - loss: 3512.5083
+Epoch 278/300
+1/1 [==============================] - 0s 2ms/step - loss: 3281.7698
+Epoch 279/300
+1/1 [==============================] - 0s 995us/step - loss: 3104.9324
+Epoch 280/300
+1/1 [==============================] - 0s 997us/step - loss: 3087.0349
+Epoch 281/300
+1/1 [==============================] - 0s 997us/step - loss: 2954.0774
+Epoch 282/300
+1/1 [==============================] - 0s 997us/step - loss: 2938.5005
+Epoch 283/300
+1/1 [==============================] - 0s 2ms/step - loss: 2770.5046
+Epoch 284/300
+1/1 [==============================] - 0s 998us/step - loss: 2778.3635
+Epoch 285/300
+1/1 [==============================] - 0s 2ms/step - loss: 2555.4634
+Epoch 286/300
+1/1 [==============================] - 0s 995us/step - loss: 2636.1672
+Epoch 287/300
+1/1 [==============================] - 0s 997us/step - loss: 2422.6096
+Epoch 288/300
+1/1 [==============================] - 0s 998us/step - loss: 2379.7925
+Epoch 289/300
+1/1 [==============================] - 0s 997us/step - loss: 2348.0520
+Epoch 290/300
+1/1 [==============================] - 0s 997us/step - loss: 2258.4749
+Epoch 291/300
+1/1 [==============================] - 0s 996us/step - loss: 2223.9863
+Epoch 292/300
+1/1 [==============================] - 0s 998us/step - loss: 2121.0156
+Epoch 293/300
+1/1 [==============================] - 0s 997us/step - loss: 2162.7991
+Epoch 294/300
+1/1 [==============================] - 0s 997us/step - loss: 2036.9716
+Epoch 295/300
+1/1 [==============================] - 0s 998us/step - loss: 2034.1119
+Epoch 296/300
+1/1 [==============================] - 0s 3ms/step - loss: 1954.4832
+Epoch 297/300
+1/1 [==============================] - 0s 2ms/step - loss: 1923.9125
+Epoch 298/300
+1/1 [==============================] - 0s 997us/step - loss: 1853.6062
+Epoch 299/300
+1/1 [==============================] - 0s 1ms/step - loss: 1820.4017
+Epoch 300/300
+1/1 [==============================] - 0s 997us/step - loss: 1691.6140
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{75}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<tensorflow.python.keras.callbacks.History at 0x224f17f86d0>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{76}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x\PYZus{}input} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{560}\PY{p}{,} \PY{l+m+mi}{417}\PY{p}{,} \PY{l+m+mi}{304}\PY{p}{]}\PY{p}{)}
+\PY{n}{temp\PYZus{}input} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{x\PYZus{}input}\PY{p}{)}
+\PY{n}{lst\PYZus{}output} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{i}\PY{o}{=}\PY{l+m+mi}{0}
+\PY{k}{while}\PY{p}{(}\PY{n}{i}\PY{o}{\PYZlt{}}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{temp\PYZus{}input}\PY{p}{)}\PY{o}{\PYZgt{}}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{:}
+        \PY{n}{x\PYZus{}input} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{temp\PYZus{}input}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ day input }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{,}\PY{n}{x\PYZus{}input}\PY{p}{)}\PY{p}{)}
+        \PY{n}{x\PYZus{}input} \PY{o}{=} \PY{n}{x\PYZus{}input}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{n\PYZus{}step}\PY{p}{,} \PY{n}{n\PYZus{}features}\PY{p}{)}\PY{p}{)}
+        \PY{n}{yhat} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{x\PYZus{}input}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ day output }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{,}\PY{n}{yhat}\PY{p}{)}\PY{p}{)}
+        \PY{n}{temp\PYZus{}input}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{yhat}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{temp\PYZus{}input} \PY{o}{=} \PY{n}{temp\PYZus{}input}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}
+        \PY{n}{lst\PYZus{}output}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{yhat}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{i}\PY{o}{=}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n}{x\PYZus{}input} \PY{o}{=} \PY{n}{x\PYZus{}input}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{n\PYZus{}step}\PY{p}{,} \PY{n}{n\PYZus{}features}\PY{p}{)}\PY{p}{)}
+        \PY{n}{yhat} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{x\PYZus{}input}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{yhat}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{temp\PYZus{}input}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{yhat}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{lst\PYZus{}output}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{yhat}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{i}\PY{o}{=}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}
+        
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{lst\PYZus{}output}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[418.0109]
+1 day input [417.         304.         418.01089478]
+1 day output [[349.28256]]
+2 day input [304.         418.01089478 349.28256226]
+2 day output [[720.8477]]
+3 day input [418.0109  349.28256 720.8477 ]
+3 day output [[418.99622]]
+4 day input [349.28256 720.8477  418.99622]
+4 day output [[643.149]]
+5 day input [720.8477  418.99622 643.149  ]
+5 day output [[435.4423]]
+6 day input [418.99622 643.149   435.4423 ]
+6 day output [[605.9606]]
+7 day input [643.149  435.4423 605.9606]
+7 day output [[452.7004]]
+8 day input [435.4423 605.9606 452.7004]
+8 day output [[545.28674]]
+9 day input [605.9606  452.7004  545.28674]
+9 day output [[480.25507]]
+[418.0109, 349.28256, 720.8477, 418.99622, 643.149, 435.4423, 605.9606,
+452.7004, 545.28674, 480.25507]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{77}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Neu\PYZus{}pred} \PY{o}{=} \PY{n}{lst\PYZus{}output}
+\PY{n}{Neu\PYZus{}pred}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{77}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[418.0109,
+ 349.28256,
+ 720.8477,
+ 418.99622,
+ 643.149,
+ 435.4423,
+ 605.9606,
+ 452.7004,
+ 545.28674,
+ 480.25507]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{80}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{D} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{zip}\PY{p}{(}\PY{n}{Pos\PYZus{}pred}\PY{p}{,}\PY{n}{Neg\PYZus{}pred}\PY{p}{,}\PY{n}{Neu\PYZus{}pred}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{82}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{final\PYZus{}pred} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{D}\PY{p}{,}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pos\PYZus{}pred}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Neg\PYZus{}pred}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Neu\PYZus{}pred}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{83}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{final\PYZus{}pred}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{83}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+     Pos\_pred    Neg\_pred    Neu\_pred
+0  484.604980  341.611755  418.010895
+1  182.240738  326.006348  349.282562
+2  382.096039  152.536819  720.847717
+3  594.091187  297.560425  418.996216
+4  422.240570  411.170441  643.148987
+5  315.952026  173.912766  435.442291
+6  437.172913  457.836487  605.960571
+7  174.732910  414.610046  452.700409
+8  358.751129  189.642807  545.286743
+9  728.915100  236.246765  480.255066
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{85}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{final\PYZus{}pred}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{C:}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{Users}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{asus}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{Desktop}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{Hashtag WD}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{Politics\PYZus{}Pred\PYZus{}LSTM.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{86}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Sentiment} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Politics\PYZus{}Pred\PYZus{}LSTM.csv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{Sentiment}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{86}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+     Pos\_pred    Neg\_pred    Neu\_pred Sentiment
+0  484.604980  341.611755  418.010895  Positive
+1  182.240738  326.006348  349.282562   Neutral
+2  382.096039  152.536820  720.847717   Neutral
+3  594.091187  297.560425  418.996216  Positive
+4  422.240570  411.170441  643.148987   Neutral
+5  315.952026  173.912766  435.442291   Neutral
+6  437.172913  457.836487  605.960571   Neutral
+7  174.732910  414.610046  452.700409   Neutral
+8  358.751129  189.642807  545.286743   Neutral
+9  728.915100  236.246765  480.255066  Positive
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
